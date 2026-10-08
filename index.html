@@ -1,0 +1,3068 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal do Aluno – Pequeno Aprendiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+:root {
+  --purple: #6C3FC5;
+  --purple-dark: #4A2A8F;
+  --purple-light: #9B6EE8;
+  --purple-xlight: #EDE5FF;
+  --yellow: #FFD94A;
+  --yellow-dark: #E5BF00;
+  --blue: #3A7BD5;
+  --blue-light: #6FA3F0;
+  --blue-xlight: #E3EDFF;
+  --white: #FFFFFF;
+  --off-white: #F7F5FF;
+  --gray-50: #F9F9FB;
+  --gray-100: #F0EEF8;
+  --gray-300: #C5BDE8;
+  --gray-600: #6B6589;
+  --gray-800: #2D2650;
+  --success: #22C55E;
+  --danger: #EF4444;
+  --warning: #F59E0B;
+  --sidebar-w: 260px;
+  --topbar-h: 64px;
+  --radius: 16px;
+  --shadow: 0 4px 24px rgba(108,63,197,0.10);
+  --shadow-lg: 0 8px 40px rgba(108,63,197,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--off-white);
+  color: var(--gray-800);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── LOGIN ─── */
+#login-page {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 50%, var(--blue) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-bg-orbs {
+  position: absolute; inset: 0; pointer-events: none;
+}
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.25;
+  animation: floatOrb 8s ease-in-out infinite;
+}
+.orb1 { width: 400px; height: 400px; background: var(--yellow); top: -100px; right: -100px; animation-delay: 0s; }
+.orb2 { width: 300px; height: 300px; background: var(--blue-light); bottom: -80px; left: -80px; animation-delay: 3s; }
+.orb3 { width: 200px; height: 200px; background: var(--purple-light); top: 40%; left: 20%; animation-delay: 5s; }
+
+@keyframes floatOrb {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.08); }
+}
+
+.login-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  position: relative;
+}
+
+.login-brand {
+  text-align: center;
+  color: white;
+}
+
+.butterfly-wrap {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin: 0 auto 24px;
+}
+
+.butterfly-svg {
+  width: 100%;
+  height: 100%;
+  animation: boyFloat 3s ease-in-out infinite;
+  filter: drop-shadow(0 8px 24px rgba(255,217,74,0.4));
+}
+
+@keyframes boyFloat {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+/* Book open/close animation – uses JS-driven scaleX */
+.book-left-page {
+  transform-origin: 86px 132px;
+  animation: bookOpenLeft 2.4s ease-in-out infinite;
+}
+.book-right-page {
+  transform-origin: 94px 132px;
+  animation: bookOpenRight 2.4s ease-in-out infinite;
+}
+.book-spine-anim {
+  animation: spineGlow 2.4s ease-in-out infinite;
+}
+/* boy eyes animate with book */
+.boy-eye-left, .boy-eye-right {
+  animation: eyeBlink 2.4s ease-in-out infinite;
+}
+.boy-smile {
+  animation: smileChange 2.4s ease-in-out infinite;
+}
+.boy-smile {
+  transform-origin: 90px 88px;
+  animation: smileChange 2.4s ease-in-out infinite;
+}
+.boy-sparkle1 { animation: sparkle 2.4s ease-in-out infinite; }
+.boy-sparkle2 { animation: sparkle 2.4s ease-in-out infinite 0.4s; }
+.boy-sparkle3 { animation: sparkle 2.4s ease-in-out infinite 0.8s; }
+
+/* Left cover swings LEFT (open) then swings back (close) */
+@keyframes bookOpenLeft {
+  0%   { transform: scaleX(1); }          /* closed */
+  15%  { transform: scaleX(1); }
+  45%  { transform: scaleX(-1); }         /* fully open – page flipped back */
+  55%  { transform: scaleX(-1); }         /* hold open */
+  85%  { transform: scaleX(1); }          /* close again */
+  100% { transform: scaleX(1); }
+}
+
+/* Right cover swings RIGHT (open) then swings back (close) */
+@keyframes bookOpenRight {
+  0%   { transform: scaleX(1); }
+  15%  { transform: scaleX(1); }
+  45%  { transform: scaleX(-1); }
+  55%  { transform: scaleX(-1); }
+  85%  { transform: scaleX(1); }
+  100% { transform: scaleX(1); }
+}
+
+@keyframes spineGlow {
+  0%,15%,85%,100% { opacity: 1; }
+  45%,55%         { opacity: 0.4; }
+}
+
+@keyframes eyeBlink {
+  0%,14%,100% { transform: scaleY(1); }
+  15%,13%     { transform: scaleY(0.08); }  /* blink as book opens */
+  30%,54%     { transform: scaleY(1.2); }   /* wide-eyed while reading */
+  55%,83%     { transform: scaleY(1); }
+  84%         { transform: scaleY(0.08); }  /* blink as book closes */
+}
+
+@keyframes smileChange {
+  0%,20%,80%,100% { transform: scaleX(1) scaleY(1); }
+  40%,60%         { transform: scaleX(1.15) scaleY(1.3); }
+}
+
+@keyframes sparkle {
+  0%,15%  { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  40%,60% { opacity: 1; transform: scale(1.3) rotate(20deg); }
+  85%,100%{ opacity: 0; transform: scale(0.4) rotate(40deg); }
+}
+
+.login-brand h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.2);
+}
+
+.login-brand h1 span { color: var(--yellow); }
+
+.login-brand p {
+  font-size: 1rem;
+  opacity: 0.8;
+  margin-top: 10px;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.login-features {
+  margin-top: 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.feat-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: white;
+  opacity: 0.85;
+}
+
+.feat-icon {
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.feat-item span { font-size: 0.9rem; font-weight: 400; }
+
+/* Login form panel */
+.login-right {
+  width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+}
+
+.login-card {
+  background: var(--white);
+  border-radius: 28px;
+  padding: 48px 40px;
+  width: 100%;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.25);
+  animation: slideUp 0.6s cubic-bezier(.22,.68,0,1.2);
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.login-card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  color: var(--gray-800);
+  margin-bottom: 6px;
+}
+.login-card .subtitle { color: var(--gray-600); font-size: 0.9rem; margin-bottom: 32px; }
+
+.form-group { margin-bottom: 20px; }
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--gray-600);
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.input-wrap {
+  position: relative;
+}
+
+.input-wrap i {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  color: var(--gray-300);
+  font-size: 1rem;
+  transition: color 0.2s;
+}
+
+.form-input {
+  width: 100%;
+  padding: 13px 14px 13px 44px;
+  border: 2px solid var(--gray-100);
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--gray-800);
+  background: var(--gray-50);
+  transition: all 0.2s;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--purple);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(108,63,197,0.1);
+}
+
+.form-input:focus + i, .input-wrap:focus-within i { color: var(--purple); }
+
+.toggle-pw {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer;
+  color: var(--gray-300); font-size: 1rem;
+}
+
+.input-error { border-color: var(--danger) !important; }
+.error-msg { color: var(--danger); font-size: 0.78rem; margin-top: 5px; display: none; }
+.error-msg.show { display: block; }
+
+.form-options {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.remember { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; cursor: pointer; }
+.remember input[type=checkbox] { accent-color: var(--purple); width: 16px; height: 16px; }
+
+.forgot-link {
+  color: var(--purple); font-size: 0.85rem; text-decoration: none; font-weight: 500;
+  cursor: pointer;
+}
+.forgot-link:hover { text-decoration: underline; }
+
+.btn-login {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.3px;
+}
+
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,63,197,0.4); }
+.btn-login:active { transform: translateY(0); }
+
+.btn-login.loading::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: inherit;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.spinner {
+  display: none;
+  width: 20px; height: 20px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.login-footer { text-align: center; margin-top: 24px; font-size: 0.82rem; color: var(--gray-600); }
+
+/* ─── AUTH TABS ─── */
+.auth-tabs {
+  display: flex;
+  background: var(--gray-100);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+.auth-tab {
+  flex: 1; padding: 10px; text-align: center;
+  border-radius: 9px; font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; transition: all 0.25s; color: var(--gray-600);
+  border: none; background: none; font-family: 'DM Sans',sans-serif;
+}
+.auth-tab.active {
+  background: white; color: var(--purple);
+  box-shadow: 0 2px 8px rgba(108,63,197,0.15);
+}
+
+/* Signup form panel */
+#signup-panel { display: none; animation: fadeIn 0.3s ease; }
+#login-panel { animation: fadeIn 0.3s ease; }
+
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+.select-input {
+  width: 100%;
+  padding: 13px 14px 13px 44px;
+  border: 2px solid var(--gray-100);
+  border-radius: 12px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.95rem;
+  color: var(--gray-800);
+  background: var(--gray-50);
+  transition: all 0.2s;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+}
+.select-input:focus { border-color: var(--purple); background: white; box-shadow: 0 0 0 4px rgba(108,63,197,0.1); }
+
+.password-strength { margin-top: 6px; }
+.strength-bar { display: flex; gap: 3px; margin-bottom: 4px; }
+.strength-seg { flex: 1; height: 3px; border-radius: 2px; background: var(--gray-100); transition: background 0.3s; }
+.strength-label { font-size: 0.72rem; color: var(--gray-600); }
+
+.terms-check { display: flex; align-items: flex-start; gap: 10px; font-size: 0.82rem; color: var(--gray-600); margin-bottom: 20px; }
+.terms-check input { margin-top: 2px; accent-color: var(--purple); width: 15px; height: 15px; flex-shrink: 0; cursor: pointer; }
+.terms-check a { color: var(--purple); font-weight: 500; text-decoration: none; }
+.terms-check a:hover { text-decoration: underline; }
+
+.signup-success {
+  display: none; text-align: center; padding: 20px 0;
+}
+.signup-success .success-icon {
+  width: 64px; height: 64px; background: #DCFCE7; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.8rem; margin: 0 auto 16px;
+  animation: bounceIn 0.5s cubic-bezier(.22,.68,0,1.4);
+}
+@keyframes bounceIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.signup-success h3 { font-family: 'Playfair Display',serif; font-size: 1.3rem; margin-bottom: 8px; }
+.signup-success p { font-size: 0.85rem; color: var(--gray-600); line-height: 1.5; }
+
+/* ─── FORGOT MODAL ─── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+  z-index: 1000; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-box {
+  background: white; border-radius: 24px; padding: 40px;
+  width: 420px; max-width: 95vw;
+  animation: slideUp 0.4s cubic-bezier(.22,.68,0,1.2);
+}
+
+.modal-box h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; margin-bottom: 6px; }
+.modal-box p { color: var(--gray-600); font-size: 0.88rem; margin-bottom: 24px; }
+
+.modal-actions { display: flex; gap: 12px; margin-top: 20px; }
+.btn-outline {
+  flex: 1; padding: 12px; border: 2px solid var(--gray-100);
+  border-radius: 10px; background: white; font-family: 'DM Sans',sans-serif;
+  font-size: 0.9rem; cursor: pointer; transition: all 0.2s;
+}
+.btn-outline:hover { border-color: var(--gray-300); }
+.btn-primary {
+  flex: 1; padding: 12px;
+  background: var(--purple); color: white; border: none;
+  border-radius: 10px; font-family: 'DM Sans',sans-serif;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn-primary:hover { background: var(--purple-dark); }
+
+/* ─── APP SHELL ─── */
+#app {
+  display: none;
+  min-height: 100vh;
+}
+
+#app.active { display: flex; }
+
+/* Sidebar */
+.sidebar {
+  width: var(--sidebar-w);
+  background: white;
+  height: 100vh;
+  position: fixed;
+  left: 0; top: 0;
+  display: flex; flex-direction: column;
+  box-shadow: 4px 0 24px rgba(108,63,197,0.06);
+  z-index: 100;
+  transition: transform 0.3s cubic-bezier(.22,.68,0,1.2);
+}
+
+.sidebar-logo {
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; gap: 12px;
+}
+
+.logo-butterfly {
+  width: 42px; height: 42px;
+  animation: boyFloat 3s ease-in-out infinite;
+}
+
+.logo-text { font-family: 'Playfair Display', serif; }
+.logo-text span { display: block; }
+.logo-text .name { font-size: 1rem; font-weight: 700; color: var(--gray-800); line-height: 1.1; }
+.logo-text .portal { font-size: 0.7rem; color: var(--purple); text-transform: uppercase; letter-spacing: 1.5px; }
+
+.sidebar-nav {
+  flex: 1; overflow-y: auto; padding: 16px 12px;
+  scrollbar-width: thin; scrollbar-color: var(--gray-100) transparent;
+}
+
+.nav-section { margin-bottom: 24px; }
+.nav-section-title {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--gray-300); padding: 0 8px; margin-bottom: 8px;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px; border-radius: 12px;
+  color: var(--gray-600); font-size: 0.88rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; margin-bottom: 2px;
+  position: relative;
+}
+
+.nav-item i { width: 20px; text-align: center; font-size: 1rem; }
+.nav-item:hover { background: var(--purple-xlight); color: var(--purple); }
+.nav-item.active { background: var(--purple); color: white; box-shadow: 0 4px 12px rgba(108,63,197,0.3); }
+.nav-item.active i { color: var(--yellow); }
+
+.nav-badge {
+  margin-left: auto; background: var(--yellow); color: var(--gray-800);
+  font-size: 0.7rem; font-weight: 700; padding: 2px 7px;
+  border-radius: 20px; min-width: 20px; text-align: center;
+}
+
+.nav-item.active .nav-badge { background: var(--yellow); color: var(--gray-800); }
+
+.sidebar-user {
+  padding: 16px 20px;
+  border-top: 1px solid var(--gray-100);
+  display: flex; align-items: center; gap: 12px;
+}
+
+.user-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple-light), var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: 700; font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.user-info .user-name { font-size: 0.85rem; font-weight: 600; color: var(--gray-800); }
+.user-info .user-role { font-size: 0.72rem; color: var(--purple); }
+
+.btn-logout {
+  margin-left: auto; background: none; border: none;
+  color: var(--gray-300); cursor: pointer; font-size: 1rem;
+  transition: color 0.2s; padding: 4px;
+}
+.btn-logout:hover { color: var(--danger); }
+
+/* Main content */
+.main-wrap {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Topbar */
+.topbar {
+  height: var(--topbar-h);
+  background: white;
+  border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center;
+  padding: 0 28px;
+  gap: 16px;
+  position: sticky; top: 0;
+  z-index: 90;
+}
+
+.topbar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  flex: 1;
+}
+
+.topbar-search {
+  display: flex; align-items: center;
+  background: var(--gray-50); border: 2px solid var(--gray-100);
+  border-radius: 10px; padding: 8px 14px; gap: 8px;
+  transition: all 0.2s;
+}
+.topbar-search:focus-within { border-color: var(--purple); background: white; }
+.topbar-search i { color: var(--gray-300); font-size: 0.9rem; }
+.topbar-search input { border: none; background: none; outline: none; font-family: 'DM Sans',sans-serif; font-size: 0.88rem; width: 180px; color: var(--gray-800); }
+
+.topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+.topbar-btn {
+  width: 38px; height: 38px; border-radius: 10px;
+  border: none; background: var(--gray-50);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--gray-600); font-size: 1rem; transition: all 0.2s;
+  position: relative;
+}
+.topbar-btn:hover { background: var(--purple-xlight); color: var(--purple); }
+
+.notif-dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 8px; height: 8px; background: var(--danger);
+  border-radius: 50%; border: 2px solid white;
+}
+
+.hamburger {
+  display: none;
+  width: 38px; height: 38px; border: none;
+  background: none; cursor: pointer;
+  flex-direction: column; justify-content: center; gap: 5px; padding: 4px;
+}
+.hamburger span { display: block; height: 2px; background: var(--gray-800); border-radius: 2px; transition: all 0.3s; }
+
+/* Content area */
+.content {
+  flex: 1;
+  padding: 28px;
+  overflow-y: auto;
+}
+
+/* Pages */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn 0.3s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── DASHBOARD ─── */
+.page-header { margin-bottom: 24px; }
+.page-header h2 { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--gray-800); }
+.page-header p { color: var(--gray-600); font-size: 0.9rem; margin-top: 2px; }
+
+.greeting-banner {
+  background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  color: white;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+.greeting-banner::before {
+  content: '';
+  position: absolute; right: -40px; top: -40px;
+  width: 200px; height: 200px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 50%;
+}
+
+.greeting-text h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; }
+.greeting-text p { opacity: 0.8; font-size: 0.88rem; margin-top: 4px; }
+.greeting-butterfly { font-size: 3rem; animation: butterflyFloat 4s ease-in-out infinite; }
+
+/* Stats cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex; align-items: center; gap: 16px;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+.stat-icon {
+  width: 50px; height: 50px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.stat-icon.purple { background: var(--purple-xlight); color: var(--purple); }
+.stat-icon.yellow { background: #FFF8D4; color: var(--yellow-dark); }
+.stat-icon.blue { background: var(--blue-xlight); color: var(--blue); }
+.stat-icon.green { background: #DCFCE7; color: var(--success); }
+
+.stat-value { font-size: 1.6rem; font-weight: 700; line-height: 1; color: var(--gray-800); }
+.stat-label { font-size: 0.78rem; color: var(--gray-600); margin-top: 2px; }
+.stat-trend { font-size: 0.75rem; margin-top: 4px; }
+.stat-trend.up { color: var(--success); }
+.stat-trend.down { color: var(--danger); }
+
+/* Dashboard grid */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.card-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  color: var(--gray-800);
+  display: flex; align-items: center; gap: 8px;
+}
+
+.card-title i { color: var(--purple); }
+
+.card-link {
+  font-size: 0.78rem; color: var(--purple); text-decoration: none;
+  font-weight: 500; cursor: pointer;
+}
+.card-link:hover { text-decoration: underline; }
+
+/* Notas recentes */
+.grades-list { display: flex; flex-direction: column; gap: 10px; }
+
+.grade-item {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--gray-50);
+  border-radius: 10px;
+  border-left: 3px solid var(--purple);
+  transition: background 0.2s;
+}
+
+.grade-item:hover { background: var(--purple-xlight); }
+.grade-subject { font-size: 0.9rem; font-weight: 500; }
+.grade-meta { font-size: 0.75rem; color: var(--gray-600); margin-top: 2px; }
+.grade-value { font-size: 1.2rem; font-weight: 700; }
+.grade-value.good { color: var(--success); }
+.grade-value.ok { color: var(--warning); }
+.grade-value.bad { color: var(--danger); }
+
+/* Avisos */
+.notices-list { display: flex; flex-direction: column; gap: 10px; }
+
+.notice-item {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border-left: 3px solid;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.notice-item:hover { opacity: 0.8; }
+.notice-item.urgent { background: #FEF2F2; border-color: var(--danger); }
+.notice-item.info { background: var(--blue-xlight); border-color: var(--blue); }
+.notice-item.success { background: #F0FDF4; border-color: var(--success); }
+
+.notice-tag {
+  font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px;
+  font-weight: 700; margin-bottom: 4px;
+}
+.notice-item.urgent .notice-tag { color: var(--danger); }
+.notice-item.info .notice-tag { color: var(--blue); }
+.notice-item.success .notice-tag { color: var(--success); }
+
+.notice-title { font-size: 0.85rem; font-weight: 600; color: var(--gray-800); }
+.notice-date { font-size: 0.72rem; color: var(--gray-600); margin-top: 2px; }
+
+/* Calendario mini */
+.mini-calendar { }
+.cal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.cal-month { font-weight: 600; font-size: 0.9rem; color: var(--gray-800); }
+.cal-nav { background: none; border: none; cursor: pointer; color: var(--gray-300); font-size: 0.9rem; padding: 4px; transition: color 0.2s; }
+.cal-nav:hover { color: var(--purple); }
+
+.cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.cal-day-name { text-align: center; font-size: 0.65rem; color: var(--gray-300); text-transform: uppercase; font-weight: 600; padding: 4px; }
+
+.cal-day {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; border-radius: 8px; cursor: pointer;
+  transition: all 0.15s; color: var(--gray-600);
+}
+.cal-day:hover { background: var(--purple-xlight); color: var(--purple); }
+.cal-day.today { background: var(--purple); color: white; font-weight: 700; box-shadow: 0 2px 8px rgba(108,63,197,0.4); }
+.cal-day.has-event::after { content: ''; display: block; width: 4px; height: 4px; border-radius: 50%; background: var(--yellow-dark); position: absolute; bottom: 2px; }
+.cal-day.has-event { position: relative; }
+.cal-day.other-month { opacity: 0.3; }
+
+/* Activities */
+.activities-list { display: flex; flex-direction: column; gap: 10px; }
+
+.activity-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 10px;
+  background: var(--gray-50);
+}
+
+.activity-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.activity-dot.purple { background: var(--purple); }
+.activity-dot.blue { background: var(--blue); }
+.activity-dot.yellow { background: var(--yellow-dark); }
+
+.activity-info { flex: 1; }
+.activity-title { font-size: 0.85rem; font-weight: 500; }
+.activity-subject { font-size: 0.72rem; color: var(--gray-600); }
+.activity-date { font-size: 0.75rem; color: var(--gray-600); white-space: nowrap; }
+
+/* ─── BOLETIM ─── */
+.periodo-tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.periodo-tab {
+  padding: 8px 18px; border-radius: 20px; font-size: 0.85rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s; border: 2px solid var(--gray-100); background: white;
+  color: var(--gray-600);
+}
+.periodo-tab.active { background: var(--purple); color: white; border-color: var(--purple); }
+
+.boletim-table { width: 100%; border-collapse: collapse; }
+.boletim-table th {
+  text-align: left; padding: 12px 16px; font-size: 0.75rem; text-transform: uppercase;
+  letter-spacing: 1px; color: var(--gray-600); background: var(--gray-50); font-weight: 600;
+}
+.boletim-table th:first-child { border-radius: 10px 0 0 10px; }
+.boletim-table th:last-child { border-radius: 0 10px 10px 0; }
+
+.boletim-table td { padding: 14px 16px; border-bottom: 1px solid var(--gray-100); font-size: 0.88rem; }
+.boletim-table tr:last-child td { border-bottom: none; }
+.boletim-table tr:hover td { background: var(--gray-50); }
+
+.grade-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 36px; height: 28px; border-radius: 8px; font-weight: 700; font-size: 0.85rem;
+  padding: 0 10px;
+}
+.grade-pill.a { background: #DCFCE7; color: #16A34A; }
+.grade-pill.b { background: #FEF9C3; color: #854D0E; }
+.grade-pill.c { background: #FEE2E2; color: #DC2626; }
+
+.progress-bar-wrap { background: var(--gray-100); border-radius: 20px; height: 6px; width: 80px; }
+.progress-bar { background: linear-gradient(90deg, var(--purple), var(--blue)); border-radius: 20px; height: 100%; transition: width 0.5s; }
+
+/* ─── AVA ─── */
+.ava-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+
+.ava-course-card {
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background: white;
+}
+.ava-course-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.ava-thumb {
+  height: 100px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.5rem;
+}
+.thumb-purple { background: linear-gradient(135deg, var(--purple), var(--purple-light)); }
+.thumb-blue { background: linear-gradient(135deg, var(--blue), var(--blue-light)); }
+.thumb-yellow { background: linear-gradient(135deg, var(--yellow-dark), var(--yellow)); }
+.thumb-green { background: linear-gradient(135deg, #16A34A, #4ADE80); }
+.thumb-red { background: linear-gradient(135deg, #DC2626, #FB7185); }
+.thumb-teal { background: linear-gradient(135deg, #0D9488, #5EEAD4); }
+
+.ava-info { padding: 14px; }
+.ava-course-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+.ava-teacher { font-size: 0.75rem; color: var(--gray-600); margin-bottom: 10px; }
+
+.ava-progress-wrap { margin-bottom: 8px; }
+.ava-progress-label { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--gray-600); margin-bottom: 4px; }
+.ava-progress { background: var(--gray-100); border-radius: 20px; height: 5px; }
+.ava-progress-fill { background: linear-gradient(90deg, var(--purple), var(--blue)); border-radius: 20px; height: 100%; }
+
+.ava-meta { display: flex; gap: 12px; }
+.ava-meta span { font-size: 0.72rem; color: var(--gray-600); display: flex; align-items: center; gap: 3px; }
+.ava-meta i { font-size: 0.7rem; }
+
+/* ─── FINANCEIRO ─── */
+.fin-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+
+.fin-card {
+  background: white; border-radius: var(--radius); padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.fin-card .fin-label { font-size: 0.8rem; color: var(--gray-600); margin-bottom: 6px; }
+.fin-card .fin-value { font-size: 1.6rem; font-weight: 700; }
+.fin-card .fin-value.green { color: var(--success); }
+.fin-card .fin-value.red { color: var(--danger); }
+.fin-card .fin-value.blue { color: var(--blue); }
+
+.payments-table { width: 100%; border-collapse: collapse; }
+.payments-table th { text-align: left; padding: 12px 16px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-600); background: var(--gray-50); font-weight: 600; }
+.payments-table td { padding: 14px 16px; border-bottom: 1px solid var(--gray-100); font-size: 0.88rem; }
+.payments-table tr:hover td { background: var(--gray-50); }
+
+.status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 600;
+}
+.status-badge.paid { background: #DCFCE7; color: #16A34A; }
+.status-badge.pending { background: #FEF9C3; color: #854D0E; }
+.status-badge.late { background: #FEE2E2; color: #DC2626; }
+
+.btn-boleto {
+  padding: 6px 14px; background: var(--blue); color: white;
+  border: none; border-radius: 8px; font-size: 0.78rem; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+}
+.btn-boleto:hover { background: var(--blue-light); transform: translateY(-1px); }
+
+/* ─── BIBLIOTECA ─── */
+.library-search-bar {
+  display: flex; gap: 12px; margin-bottom: 24px;
+}
+
+.lib-search-input {
+  flex: 1; padding: 12px 18px; border-radius: 12px;
+  border: 2px solid var(--gray-100); background: white;
+  font-family: 'DM Sans',sans-serif; font-size: 0.9rem;
+  outline: none; transition: all 0.2s;
+}
+.lib-search-input:focus { border-color: var(--purple); }
+
+.btn-search {
+  padding: 12px 22px; background: var(--purple); color: white;
+  border: none; border-radius: 12px; font-family: 'DM Sans',sans-serif;
+  font-weight: 600; cursor: pointer; transition: all 0.2s;
+}
+.btn-search:hover { background: var(--purple-dark); }
+
+.books-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+.book-card {
+  background: white; border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow);
+  cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
+}
+.book-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.book-cover {
+  height: 130px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 3rem;
+  position: relative;
+}
+
+.book-info { padding: 12px; }
+.book-title { font-size: 0.82rem; font-weight: 600; margin-bottom: 3px; line-height: 1.3; }
+.book-author { font-size: 0.72rem; color: var(--gray-600); margin-bottom: 8px; }
+.book-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.book-tag.ciencias { background: #DCFCE7; color: #16A34A; }
+.book-tag.historia { background: var(--purple-xlight); color: var(--purple); }
+.book-tag.literatura { background: var(--blue-xlight); color: var(--blue); }
+.book-tag.matematica { background: #FEF9C3; color: #854D0E; }
+
+/* ─── MENSAGENS ─── */
+.msg-layout { display: grid; grid-template-columns: 280px 1fr; gap: 16px; height: 500px; }
+
+.msg-contacts {
+  background: white; border-radius: var(--radius); overflow: hidden;
+  display: flex; flex-direction: column; box-shadow: var(--shadow);
+}
+
+.msg-contacts-header { padding: 16px; border-bottom: 1px solid var(--gray-100); }
+.msg-contacts-header h4 { font-size: 0.9rem; font-weight: 600; }
+
+.msg-contact-list { flex: 1; overflow-y: auto; }
+
+.msg-contact {
+  padding: 13px 16px; display: flex; align-items: center; gap: 11px;
+  cursor: pointer; transition: background 0.15s; border-bottom: 1px solid var(--gray-100);
+}
+.msg-contact:hover { background: var(--gray-50); }
+.msg-contact.active { background: var(--purple-xlight); }
+
+.contact-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+}
+.ca-purple { background: var(--purple-xlight); color: var(--purple); }
+.ca-blue { background: var(--blue-xlight); color: var(--blue); }
+.ca-yellow { background: #FFF8D4; color: var(--yellow-dark); }
+.ca-green { background: #DCFCE7; color: #16A34A; }
+
+.contact-info { flex: 1; min-width: 0; }
+.contact-name { font-size: 0.85rem; font-weight: 500; }
+.contact-preview { font-size: 0.72rem; color: var(--gray-600); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.contact-time { font-size: 0.68rem; color: var(--gray-300); white-space: nowrap; }
+
+.msg-main {
+  background: white; border-radius: var(--radius);
+  display: flex; flex-direction: column; box-shadow: var(--shadow); overflow: hidden;
+}
+
+.msg-main-header {
+  padding: 16px 20px; border-bottom: 1px solid var(--gray-100);
+  display: flex; align-items: center; gap: 12px;
+}
+
+.msg-main-header h4 { font-size: 0.95rem; font-weight: 600; }
+.msg-main-header p { font-size: 0.75rem; color: var(--success); }
+
+.msg-thread {
+  flex: 1; overflow-y: auto; padding: 20px;
+  display: flex; flex-direction: column; gap: 14px;
+  background: var(--gray-50);
+}
+
+.msg-bubble-wrap { display: flex; gap: 10px; }
+.msg-bubble-wrap.mine { flex-direction: row-reverse; }
+
+.bubble-avatar {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem; font-weight: 700; flex-shrink: 0;
+}
+
+.msg-bubble {
+  max-width: 65%; padding: 10px 14px; border-radius: 14px; font-size: 0.85rem; line-height: 1.4;
+}
+.msg-bubble.other { background: white; border-bottom-left-radius: 4px; color: var(--gray-800); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.msg-bubble.mine { background: var(--purple); color: white; border-bottom-right-radius: 4px; }
+.msg-time { font-size: 0.65rem; color: var(--gray-300); margin-top: 4px; }
+.msg-bubble-wrap.mine .msg-time { text-align: right; }
+
+.msg-input-wrap {
+  padding: 14px 16px; border-top: 1px solid var(--gray-100);
+  display: flex; align-items: center; gap: 10px;
+}
+
+.msg-input {
+  flex: 1; padding: 10px 14px; border-radius: 20px;
+  border: 2px solid var(--gray-100); background: var(--gray-50);
+  font-family: 'DM Sans',sans-serif; font-size: 0.88rem; outline: none;
+  transition: all 0.2s;
+}
+.msg-input:focus { border-color: var(--purple); background: white; }
+
+.btn-send {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--purple); border: none; color: white; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s;
+}
+.btn-send:hover { background: var(--purple-dark); transform: scale(1.05); }
+
+/* ─── SECRETARIA ─── */
+.secretaria-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+.secretaria-card {
+  background: white; border-radius: var(--radius); padding: 24px;
+  box-shadow: var(--shadow); cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.secretaria-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+
+.sec-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; flex-shrink: 0;
+}
+.sec-icon.purple { background: var(--purple-xlight); color: var(--purple); }
+.sec-icon.blue { background: var(--blue-xlight); color: var(--blue); }
+.sec-icon.yellow { background: #FFF8D4; color: var(--yellow-dark); }
+.sec-icon.green { background: #DCFCE7; color: var(--success); }
+
+.sec-info h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; }
+.sec-info p { font-size: 0.8rem; color: var(--gray-600); line-height: 1.4; }
+
+.sec-btn {
+  margin-top: 14px; display: inline-block; padding: 7px 16px;
+  background: var(--purple-xlight); color: var(--purple);
+  border-radius: 8px; font-size: 0.8rem; font-weight: 600;
+  transition: all 0.2s;
+}
+.sec-btn:hover { background: var(--purple); color: white; }
+
+/* ─── AVALIAÇÃO DOCENTES ─── */
+.prof-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+.prof-card {
+  background: white; border-radius: var(--radius); padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+.prof-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.prof-avatar {
+  width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.1rem; flex-shrink: 0;
+}
+.prof-info h4 { font-size: 0.95rem; font-weight: 600; }
+.prof-info p { font-size: 0.78rem; color: var(--gray-600); }
+
+.stars { display: flex; gap: 4px; margin-bottom: 12px; }
+.star { font-size: 1.2rem; cursor: pointer; transition: transform 0.1s; color: var(--gray-100); }
+.star.active { color: var(--yellow-dark); }
+.star:hover { transform: scale(1.2); }
+
+.eval-textarea {
+  width: 100%; min-height: 70px; padding: 10px 14px;
+  border: 2px solid var(--gray-100); border-radius: 10px;
+  font-family: 'DM Sans',sans-serif; font-size: 0.85rem;
+  resize: vertical; outline: none; transition: all 0.2s;
+}
+.eval-textarea:focus { border-color: var(--purple); }
+
+.btn-eval {
+  margin-top: 10px; padding: 8px 18px;
+  background: var(--yellow); color: var(--gray-800);
+  border: none; border-radius: 8px; font-family: 'DM Sans',sans-serif;
+  font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s;
+}
+.btn-eval:hover { background: var(--yellow-dark); transform: translateY(-1px); }
+
+/* ─── NOTIF PANEL ─── */
+.notif-panel {
+  display: none; position: fixed;
+  right: 24px; top: 70px;
+  width: 320px;
+  background: white; border-radius: 16px;
+  box-shadow: var(--shadow-lg);
+  z-index: 200;
+  animation: slideDown 0.25s ease;
+}
+.notif-panel.open { display: block; }
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.notif-header { padding: 16px 18px; border-bottom: 1px solid var(--gray-100); display: flex; justify-content: space-between; align-items: center; }
+.notif-header h4 { font-size: 0.9rem; font-weight: 600; }
+.notif-clear { font-size: 0.75rem; color: var(--purple); cursor: pointer; font-weight: 500; }
+
+.notif-list { max-height: 320px; overflow-y: auto; }
+.notif-item { padding: 13px 18px; border-bottom: 1px solid var(--gray-100); display: flex; gap: 10px; cursor: pointer; transition: background 0.15s; }
+.notif-item:hover { background: var(--gray-50); }
+.notif-item.unread { background: var(--purple-xlight); }
+.notif-icon-wrap { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+.notif-icon-wrap.purple { background: var(--purple-xlight); color: var(--purple); }
+.notif-icon-wrap.blue { background: var(--blue-xlight); color: var(--blue); }
+.notif-icon-wrap.yellow { background: #FFF8D4; color: var(--yellow-dark); }
+.notif-icon-wrap.red { background: #FEE2E2; color: var(--danger); }
+.notif-text { flex: 1; }
+.notif-text p { font-size: 0.82rem; line-height: 1.4; }
+.notif-text span { font-size: 0.68rem; color: var(--gray-300); }
+
+/* ─── TOAST ─── */
+.toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+.toast {
+  background: var(--gray-800); color: white; padding: 12px 20px;
+  border-radius: 12px; font-size: 0.85rem; font-weight: 500;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  animation: toastIn 0.3s cubic-bezier(.22,.68,0,1.2);
+  pointer-events: all;
+  max-width: 300px;
+}
+.toast.success { background: var(--success); }
+.toast.error { background: var(--danger); }
+.toast.info { background: var(--blue); }
+@keyframes toastIn { from { opacity: 0; transform: translateX(40px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes toastOut { to { opacity: 0; transform: translateX(40px); } }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1100px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .dash-grid { grid-template-columns: 1fr; }
+  .ava-grid { grid-template-columns: repeat(2, 1fr); }
+  .books-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  :root { --sidebar-w: 260px; }
+
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  .sidebar.mobile-open { transform: translateX(0); }
+
+  .sidebar-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.4); z-index: 99;
+  }
+  .sidebar-overlay.visible { display: block; }
+
+  .main-wrap { margin-left: 0; }
+  .hamburger { display: flex; }
+  .topbar-search { display: none; }
+
+  .login-left { display: none; }
+  .login-right { width: 100%; padding: 24px; }
+  .login-card { padding: 32px 24px; }
+
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .fin-summary { grid-template-columns: 1fr; }
+  .ava-grid { grid-template-columns: 1fr; }
+  .books-grid { grid-template-columns: repeat(2, 1fr); }
+  .msg-layout { grid-template-columns: 1fr; height: auto; }
+  .msg-contacts { height: 200px; }
+  .msg-main { height: 350px; }
+  .secretaria-grid { grid-template-columns: 1fr; }
+  .prof-grid { grid-template-columns: 1fr; }
+
+  .greeting-banner { flex-direction: column; text-align: center; gap: 12px; }
+}
+
+@media (max-width: 480px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .content { padding: 16px; }
+}
+
+/* ─── LOADER ─── */
+.page-loader {
+  display: none; position: fixed; inset: 0;
+  background: var(--purple); z-index: 9999;
+  align-items: center; justify-content: center;
+  flex-direction: column; gap: 20px;
+}
+.page-loader.active { display: flex; }
+.loader-butterfly { font-size: 3rem; animation: boyFloat 1s ease-in-out infinite; }
+.loader-text { color: white; font-size: 1rem; font-weight: 500; }
+.loader-dots { display: flex; gap: 6px; }
+.loader-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--yellow); animation: dotPulse 1.2s ease-in-out infinite; }
+.loader-dot:nth-child(2) { animation-delay: 0.2s; }
+.loader-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dotPulse { 0%, 100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
+
+/* Shake on wrong password */
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-10px); }
+  40%     { transform: translateX(10px); }
+  60%     { transform: translateX(-8px); }
+  80%     { transform: translateX(8px); }
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div class="page-loader" id="pageLoader">
+  <div class="loader-butterfly">📖</div>
+  <div class="loader-text">Carregando Portal...</div>
+  <div class="loader-dots">
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+    <div class="loader-dot"></div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ─── LOGIN PAGE ─── -->
+<div id="login-page">
+  <div class="login-bg-orbs">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+  </div>
+
+  <div class="login-left">
+    <div class="login-brand">
+      <div class="butterfly-wrap">
+        <svg class="butterfly-svg" viewBox="0 0 180 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+          <!-- ── SHADOW ── -->
+          <ellipse cx="90" cy="204" rx="36" ry="5" fill="rgba(0,0,0,0.12)"/>
+
+          <!-- ── LEGS ── -->
+          <rect x="73" y="150" width="14" height="32" rx="7" fill="#F5C09A"/>
+          <rect x="93" y="150" width="14" height="32" rx="7" fill="#F5C09A"/>
+          <!-- Shoes -->
+          <ellipse cx="80" cy="182" rx="11" ry="6" fill="#4A2A8F"/>
+          <ellipse cx="100" cy="182" rx="11" ry="6" fill="#4A2A8F"/>
+          <!-- shoe highlights -->
+          <ellipse cx="76" cy="179" rx="4" ry="2" fill="#6C3FC5" opacity="0.5"/>
+          <ellipse cx="96" cy="179" rx="4" ry="2" fill="#6C3FC5" opacity="0.5"/>
+
+          <!-- ── TORSO ── -->
+          <rect x="64" y="102" width="52" height="52" rx="15" fill="#6C3FC5"/>
+          <!-- shirt detail -->
+          <path d="M80 102 L90 116 L100 102" fill="white" opacity="0.25"/>
+          <rect x="70" y="116" width="16" height="11" rx="3" fill="white" opacity="0.15"/>
+          <text x="71" y="126" font-size="11" fill="#FFD94A">★</text>
+
+          <!-- ── ARMS (static, angled down to hold book) ── -->
+          <!-- Left arm: shoulder to elbow -->
+          <rect x="44" y="108" width="24" height="11" rx="5.5" fill="#F5C09A" transform="rotate(35 44 108)"/>
+          <!-- Right arm -->
+          <rect x="112" y="108" width="24" height="11" rx="5.5" fill="#F5C09A" transform="rotate(-35 136 108)"/>
+
+          <!-- ── HANDS ── -->
+          <ellipse cx="53" cy="132" rx="9" ry="8" fill="#F5C09A"/>
+          <ellipse cx="127" cy="132" rx="9" ry="8" fill="#F5C09A"/>
+
+          <!-- ══ BOOK ══ -->
+          <!-- Book pages inner (always visible, the white interior) -->
+          <rect x="62" y="120" width="56" height="32" rx="2" fill="#FFFDE8"/>
+          <!-- centre lines of open book -->
+          <line x1="90" y1="120" x2="90" y2="152" stroke="#E5BF00" stroke-width="2.5"/>
+
+          <!-- Left cover (opens LEFT by flipping scaleX around spine) -->
+          <g class="book-left-page">
+            <!-- cover face -->
+            <rect x="52" y="118" width="38" height="36" rx="4" fill="#FFD94A"/>
+            <!-- cover inner page -->
+            <rect x="54" y="120" width="34" height="32" rx="2" fill="#FFF8D4"/>
+            <!-- text lines on left page -->
+            <line x1="58" y1="128" x2="86" y2="128" stroke="#9B6EE8" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="58" y1="134" x2="84" y2="134" stroke="#9B6EE8" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="58" y1="140" x2="82" y2="140" stroke="#9B6EE8" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="58" y1="146" x2="80" y2="146" stroke="#C5BDE8" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+
+          <!-- Right cover (opens RIGHT) -->
+          <g class="book-right-page">
+            <!-- cover face -->
+            <rect x="90" y="118" width="38" height="36" rx="4" fill="#9B6EE8"/>
+            <!-- cover inner page -->
+            <rect x="92" y="120" width="34" height="32" rx="2" fill="#EDE5FF"/>
+            <!-- text lines on right page -->
+            <line x1="94" y1="128" x2="122" y2="128" stroke="#6C3FC5" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="94" y1="134" x2="120" y2="134" stroke="#6C3FC5" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="94" y1="140" x2="118" y2="140" stroke="#6C3FC5" stroke-width="1.8" stroke-linecap="round"/>
+            <line x1="94" y1="146" x2="116" y2="146" stroke="#C5BDE8" stroke-width="1.4" stroke-linecap="round"/>
+          </g>
+
+          <!-- Spine (on top) -->
+          <rect x="87" y="118" width="6" height="36" rx="3" fill="#E5BF00" class="book-spine-anim"/>
+          <!-- Bottom edge of book -->
+          <rect x="52" y="151" width="76" height="5" rx="2.5" fill="#C9930A"/>
+
+          <!-- ── NECK ── -->
+          <rect x="84" y="92" width="12" height="12" rx="5" fill="#F5C09A"/>
+
+          <!-- ── HEAD ── -->
+          <ellipse cx="90" cy="77" rx="27" ry="27" fill="#F5C09A"/>
+          <!-- Ears -->
+          <ellipse cx="63" cy="77" rx="5" ry="7" fill="#F5C09A"/>
+          <ellipse cx="117" cy="77" rx="5" ry="7" fill="#F5C09A"/>
+          <!-- Inner ears -->
+          <ellipse cx="63" cy="77" rx="2.5" ry="4" fill="#FFAAB0" opacity="0.5"/>
+          <ellipse cx="117" cy="77" rx="2.5" ry="4" fill="#FFAAB0" opacity="0.5"/>
+
+          <!-- ── HAIR ── -->
+          <path d="M63 65 Q90 42 117 65 Q117 48 90 44 Q63 48 63 65Z" fill="#2D2650"/>
+          <ellipse cx="90" cy="48" rx="9" ry="6" fill="#4A2A8F"/>
+          <!-- Hair strands -->
+          <path d="M85 44 Q88 36 90 44" stroke="#6C3FC5" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M90 43 Q93 35 96 43" stroke="#6C3FC5" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+          <!-- ── EYES ── -->
+          <!-- Left eye white -->
+          <ellipse cx="80" cy="75" rx="6" ry="6.5" fill="white"/>
+          <!-- Left pupil group (animated) -->
+          <g class="boy-eye-left" style="transform-origin: 80px 76px">
+            <ellipse cx="80" cy="76" rx="3.5" ry="4" fill="#2D2650"/>
+            <ellipse cx="81.2" cy="74.8" rx="1.3" ry="1.3" fill="white"/>
+          </g>
+          <!-- Right eye white -->
+          <ellipse cx="100" cy="75" rx="6" ry="6.5" fill="white"/>
+          <!-- Right pupil group (animated) -->
+          <g class="boy-eye-right" style="transform-origin: 100px 76px">
+            <ellipse cx="100" cy="76" rx="3.5" ry="4" fill="#2D2650"/>
+            <ellipse cx="101.2" cy="74.8" rx="1.3" ry="1.3" fill="white"/>
+          </g>
+
+          <!-- ── EYEBROWS ── -->
+          <path d="M74 67 Q80 64 86 67" stroke="#2D2650" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <path d="M94 67 Q100 64 106 67" stroke="#2D2650" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+          <!-- ── SMILE ── -->
+          <path class="boy-smile" d="M82 86 Q90 93 98 86" stroke="#C47A45" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+          <!-- ── CHEEKS ── -->
+          <ellipse cx="71" cy="83" rx="6" ry="4" fill="#FFAAB0" opacity="0.45"/>
+          <ellipse cx="109" cy="83" rx="6" ry="4" fill="#FFAAB0" opacity="0.45"/>
+
+          <!-- ── SPARKLES (animated) ── -->
+          <g class="boy-sparkle1" style="transform-origin:142px 62px">
+            <text x="134" y="68" font-size="16" fill="#FFD94A">✦</text>
+          </g>
+          <g class="boy-sparkle2" style="transform-origin:36px 80px">
+            <text x="30" y="86" font-size="12" fill="#FFD94A">✦</text>
+          </g>
+          <g class="boy-sparkle3" style="transform-origin:148px 105px">
+            <text x="142" y="111" font-size="9" fill="white">✦</text>
+          </g>
+
+        </svg>
+      </div>
+      <h1>Pequeno<br><span>Aprendiz</span></h1>
+      <p>Portal do Aluno</p>
+
+      <div class="login-features">
+        <div class="feat-item">
+          <div class="feat-icon"><i class="fas fa-graduation-cap"></i></div>
+          <span>Acesso ao histórico acadêmico completo</span>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon"><i class="fas fa-play-circle"></i></div>
+          <span>Videoaulas e ambiente virtual de aprendizagem</span>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+          <span>Gestão financeira e emissão de boletos</span>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon"><i class="fas fa-comments"></i></div>
+          <span>Chat direto com professores e tutores</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-right">
+    <div class="login-card">
+
+      <!-- ABAS LOGIN / CADASTRO -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tabLogin" onclick="switchAuthTab('login')">
+          <i class="fas fa-sign-in-alt"></i> Entrar
+        </button>
+        <button class="auth-tab" id="tabSignup" onclick="switchAuthTab('signup')">
+          <i class="fas fa-user-plus"></i> Criar Conta
+        </button>
+      </div>
+
+      <!-- ── PAINEL LOGIN ── -->
+      <div id="login-panel">
+        <h2>Bem-vindo(a) de volta!</h2>
+        <p class="subtitle">Acesse sua conta para continuar</p>
+
+        <div class="form-group">
+          <label>CPF</label>
+          <div class="input-wrap">
+            <input type="text" class="form-input" id="cpfInput" placeholder="000.000.000-00" maxlength="14">
+            <i class="fas fa-id-card"></i>
+          </div>
+          <p class="error-msg" id="cpfError">CPF inválido. Tente novamente.</p>
+        </div>
+
+        <div class="form-group">
+          <label>Senha</label>
+          <div class="input-wrap" style="position:relative">
+            <input type="password" class="form-input" id="pwInput" placeholder="Sua senha">
+            <i class="fas fa-lock" style="left:14px;position:absolute;top:50%;transform:translateY(-50%)"></i>
+            <button class="toggle-pw" id="togglePw" type="button"><i class="fas fa-eye" id="eyeIcon"></i></button>
+          </div>
+          <p class="error-msg" id="pwError">Senha incorreta. Tente novamente.</p>
+        </div>
+
+        <div class="form-options">
+          <label class="remember">
+            <input type="checkbox" id="rememberMe"> Lembrar-me
+          </label>
+          <a class="forgot-link" id="forgotLink">Esqueci a senha</a>
+        </div>
+
+        <button class="btn-login" id="btnLogin">
+          <span id="btnLoginText">Entrar no Portal</span>
+          <div class="spinner" id="loginSpinner"></div>
+        </button>
+
+        <div class="login-footer">
+          Ainda não tem conta? <a style="color:var(--purple);font-weight:500;cursor:pointer" onclick="switchAuthTab('signup')">Criar conta gratuita</a>
+        </div>
+      </div>
+
+      <!-- ── PAINEL CADASTRO ── -->
+      <div id="signup-panel">
+        <h2>Criar Conta</h2>
+        <p class="subtitle">Preencha seus dados para se cadastrar</p>
+
+        <!-- Sucesso do cadastro -->
+        <div class="signup-success" id="signupSuccess">
+          <div class="success-icon">✅</div>
+          <h3>Conta criada com sucesso!</h3>
+          <p>Enviamos um e-mail de confirmação. Verifique sua caixa de entrada e acesse com seu CPF e senha.</p>
+          <button class="btn-login" style="margin-top:20px" onclick="switchAuthTab('login')">
+            Ir para o Login
+          </button>
+        </div>
+
+        <div id="signupForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nome</label>
+              <div class="input-wrap">
+                <input type="text" class="form-input" id="regNome" placeholder="Seu nome">
+                <i class="fas fa-user"></i>
+              </div>
+              <p class="error-msg" id="regNomeError">Nome obrigatório.</p>
+            </div>
+            <div class="form-group">
+              <label>Sobrenome</label>
+              <div class="input-wrap">
+                <input type="text" class="form-input" id="regSobrenome" placeholder="Sobrenome">
+                <i class="fas fa-user"></i>
+              </div>
+              <p class="error-msg" id="regSobrenomeError">Sobrenome obrigatório.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>CPF</label>
+            <div class="input-wrap">
+              <input type="text" class="form-input" id="regCpf" placeholder="000.000.000-00" maxlength="14">
+              <i class="fas fa-id-card"></i>
+            </div>
+            <p class="error-msg" id="regCpfError">CPF inválido.</p>
+          </div>
+
+          <div class="form-group">
+            <label>E-mail</label>
+            <div class="input-wrap">
+              <input type="email" class="form-input" id="regEmail" placeholder="seu@email.com">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <p class="error-msg" id="regEmailError">E-mail inválido.</p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Data de Nascimento</label>
+              <div class="input-wrap">
+                <input type="date" class="form-input" id="regNasc" style="padding-left:44px">
+                <i class="fas fa-calendar"></i>
+              </div>
+              <p class="error-msg" id="regNascError">Data obrigatória.</p>
+            </div>
+            <div class="form-group">
+              <label>Turno</label>
+              <div class="input-wrap">
+                <select class="select-input" id="regTurno">
+                  <option value="">Selecione</option>
+                  <option>Matutino</option>
+                  <option>Vespertino</option>
+                  <option>Noturno</option>
+                </select>
+                <i class="fas fa-clock"></i>
+              </div>
+              <p class="error-msg" id="regTurnoError">Selecione o turno.</p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Série / Turma</label>
+            <div class="input-wrap">
+              <select class="select-input" id="regSerie">
+                <option value="">Selecione sua série</option>
+                <option>1º Ano – Ensino Médio</option>
+                <option>2º Ano – Ensino Médio</option>
+                <option>3º Ano – Ensino Médio</option>
+                <option>6º Ano – Ensino Fundamental</option>
+                <option>7º Ano – Ensino Fundamental</option>
+                <option>8º Ano – Ensino Fundamental</option>
+                <option>9º Ano – Ensino Fundamental</option>
+              </select>
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <p class="error-msg" id="regSerieError">Selecione a série.</p>
+          </div>
+
+          <div class="form-group">
+            <label>Senha</label>
+            <div class="input-wrap" style="position:relative">
+              <input type="password" class="form-input" id="regSenha" placeholder="Mínimo 8 caracteres" oninput="checkStrength(this.value)">
+              <i class="fas fa-lock" style="left:14px;position:absolute;top:50%;transform:translateY(-50%)"></i>
+              <button class="toggle-pw" type="button" onclick="toggleField('regSenha',this)"><i class="fas fa-eye"></i></button>
+            </div>
+            <div class="password-strength">
+              <div class="strength-bar">
+                <div class="strength-seg" id="seg1"></div>
+                <div class="strength-seg" id="seg2"></div>
+                <div class="strength-seg" id="seg3"></div>
+                <div class="strength-seg" id="seg4"></div>
+              </div>
+              <div class="strength-label" id="strengthLabel">Digite uma senha</div>
+            </div>
+            <p class="error-msg" id="regSenhaError">Senha muito fraca (mín. 8 caracteres).</p>
+          </div>
+
+          <div class="form-group">
+            <label>Confirmar Senha</label>
+            <div class="input-wrap" style="position:relative">
+              <input type="password" class="form-input" id="regConfirm" placeholder="Repita a senha">
+              <i class="fas fa-lock" style="left:14px;position:absolute;top:50%;transform:translateY(-50%)"></i>
+              <button class="toggle-pw" type="button" onclick="toggleField('regConfirm',this)"><i class="fas fa-eye"></i></button>
+            </div>
+            <p class="error-msg" id="regConfirmError">As senhas não coincidem.</p>
+          </div>
+
+          <div class="terms-check">
+            <input type="checkbox" id="acceptTerms">
+            <label for="acceptTerms">Li e aceito os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a> da instituição.</label>
+          </div>
+          <p class="error-msg" id="termsError">Você precisa aceitar os termos.</p>
+
+          <button class="btn-login" id="btnSignup" onclick="submitSignup()">
+            <span id="btnSignupText">Criar Minha Conta</span>
+            <div class="spinner" id="signupSpinner"></div>
+          </button>
+
+          <div class="login-footer">
+            Já tem conta? <a style="color:var(--purple);font-weight:500;cursor:pointer" onclick="switchAuthTab('login')">Fazer login</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD MODAL -->
+<div class="modal-overlay" id="forgotModal">
+  <div class="modal-box">
+    <h3>Recuperar Senha</h3>
+    <p>Informe seu CPF e e-mail cadastrado para receber o link de recuperação.</p>
+
+    <div class="form-group">
+      <label>CPF</label>
+      <div class="input-wrap">
+        <input type="text" class="form-input" placeholder="000.000.000-00">
+        <i class="fas fa-id-card"></i>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>E-mail</label>
+      <div class="input-wrap">
+        <input type="email" class="form-input" placeholder="seu@email.com">
+        <i class="fas fa-envelope"></i>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-outline" id="cancelForgot">Cancelar</button>
+      <button class="btn-primary" id="sendRecovery">Enviar Link</button>
+    </div>
+  </div>
+</div>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ─── APP SHELL ─── -->
+<div id="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <svg class="logo-butterfly" viewBox="0 0 42 42" fill="none">
+        <!-- Body -->
+        <rect x="15" y="22" width="12" height="14" rx="5" fill="#6C3FC5"/>
+        <!-- Legs -->
+        <rect x="16" y="33" width="4" height="7" rx="2" fill="#F5C09A"/>
+        <rect x="22" y="33" width="4" height="7" rx="2" fill="#F5C09A"/>
+        <!-- Shoes -->
+        <ellipse cx="18" cy="40" rx="4" ry="2.5" fill="#4A2A8F"/>
+        <ellipse cx="24" cy="40" rx="4" ry="2.5" fill="#4A2A8F"/>
+        <!-- Book (open) -->
+        <rect x="8" y="26" width="10" height="8" rx="1.5" fill="#FFF8D4"/>
+        <rect x="18" y="26" width="2" height="8" rx="1" fill="#E5BF00"/>
+        <rect x="20" y="26" width="10" height="8" rx="1.5" fill="#EDE5FF"/>
+        <!-- Hands -->
+        <circle cx="11" cy="26" r="2.5" fill="#F5C09A"/>
+        <circle cx="31" cy="26" r="2.5" fill="#F5C09A"/>
+        <!-- Arms -->
+        <rect x="11" y="24" width="6" height="4" rx="2" fill="#F5C09A" transform="rotate(10 11 24)"/>
+        <rect x="25" y="24" width="6" height="4" rx="2" fill="#F5C09A" transform="rotate(-10 31 24)"/>
+        <!-- Head -->
+        <ellipse cx="21" cy="15" rx="8" ry="8" fill="#F5C09A"/>
+        <!-- Hair -->
+        <path d="M13 13 Q21 5 29 13 Q29 7 21 5 Q13 7 13 13Z" fill="#4A2A8F"/>
+        <!-- Eyes -->
+        <circle cx="18" cy="14" r="2" fill="#2D2650"/>
+        <circle cx="24" cy="14" r="2" fill="#2D2650"/>
+        <circle cx="18.6" cy="13.4" r="0.7" fill="white"/>
+        <circle cx="24.6" cy="13.4" r="0.7" fill="white"/>
+        <!-- Smile -->
+        <path d="M18 18 Q21 21 24 18" stroke="#C47A45" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <!-- Star -->
+        <text x="30" y="18" font-size="7" fill="#FFD94A">✦</text>
+      </svg>
+      <div class="logo-text">
+        <span class="name">Pequeno Aprendiz</span>
+        <span class="portal">Portal do Aluno</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Principal</div>
+        <div class="nav-item active" data-page="dashboard">
+          <i class="fas fa-home"></i> Dashboard
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Acadêmico</div>
+        <div class="nav-item" data-page="calendario">
+          <i class="fas fa-calendar-alt"></i> Calendário
+        </div>
+        <div class="nav-item" data-page="grade">
+          <i class="fas fa-book-open"></i> Grade de Disciplinas
+        </div>
+        <div class="nav-item" data-page="historico">
+          <i class="fas fa-scroll"></i> Histórico Escolar
+        </div>
+        <div class="nav-item" data-page="boletim">
+          <i class="fas fa-chart-bar"></i> Boletim de Notas
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Financeiro</div>
+        <div class="nav-item" data-page="financeiro">
+          <i class="fas fa-file-invoice-dollar"></i> Financeiro
+          <span class="nav-badge">1</span>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Aprendizagem</div>
+        <div class="nav-item" data-page="ava">
+          <i class="fas fa-laptop-code"></i> AVA
+        </div>
+        <div class="nav-item" data-page="biblioteca">
+          <i class="fas fa-books"></i> Biblioteca Virtual
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Serviços</div>
+        <div class="nav-item" data-page="mensagens">
+          <i class="fas fa-comment-dots"></i> Mensagens
+          <span class="nav-badge">3</span>
+        </div>
+        <div class="nav-item" data-page="secretaria">
+          <i class="fas fa-building"></i> Secretaria
+        </div>
+        <div class="nav-item" data-page="avaliacao">
+          <i class="fas fa-star"></i> Avaliação de Docentes
+        </div>
+      </div>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">AM</div>
+      <div class="user-info">
+        <div class="user-name">Ana Martins</div>
+        <div class="user-role">Aluna – 3º Ano</div>
+      </div>
+      <button class="btn-logout" id="btnLogout" title="Sair"><i class="fas fa-sign-out-alt"></i></button>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAP -->
+  <div class="main-wrap">
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="hamburger" id="hamburgerBtn">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Dashboard</div>
+
+      <div class="topbar-search">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Buscar no portal...">
+      </div>
+
+      <div class="topbar-actions">
+        <button class="topbar-btn" id="notifBtn">
+          <i class="fas fa-bell"></i>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="user-avatar" style="width:36px;height:36px;font-size:0.8rem;cursor:pointer">AM</div>
+      </div>
+    </header>
+
+    <!-- NOTIFICATIONS PANEL -->
+    <div class="notif-panel" id="notifPanel">
+      <div class="notif-header">
+        <h4>Notificações</h4>
+        <span class="notif-clear" id="clearNotif">Marcar todas como lidas</span>
+      </div>
+      <div class="notif-list">
+        <div class="notif-item unread">
+          <div class="notif-icon-wrap red"><i class="fas fa-exclamation-circle"></i></div>
+          <div class="notif-text"><p>Boleto de Maio vence em 3 dias!</p><span>Há 2 horas</span></div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon-wrap purple"><i class="fas fa-comment"></i></div>
+          <div class="notif-text"><p>Prof. Carlos respondeu sua dúvida em Matemática</p><span>Há 4 horas</span></div>
+        </div>
+        <div class="notif-item unread">
+          <div class="notif-icon-wrap yellow"><i class="fas fa-book"></i></div>
+          <div class="notif-text"><p>Nova aula disponível: Química Orgânica</p><span>Há 1 dia</span></div>
+        </div>
+        <div class="notif-item">
+          <div class="notif-icon-wrap blue"><i class="fas fa-calendar"></i></div>
+          <div class="notif-text"><p>Prova de Física agendada para 28/03</p><span>Há 2 dias</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <main class="content">
+
+      <!-- ─── DASHBOARD PAGE ─── -->
+      <div class="page active" id="page-dashboard">
+        <div class="greeting-banner">
+          <div class="greeting-text">
+            <h3>Olá, Ana! Bem-vinda de volta 👋</h3>
+            <p>Terça-feira, 25 de Março de 2025 · Semestre 2025/1</p>
+          </div>
+          <div class="greeting-butterfly">📖</div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon purple"><i class="fas fa-star"></i></div>
+            <div>
+              <div class="stat-value">8.4</div>
+              <div class="stat-label">Média Geral</div>
+              <div class="stat-trend up">▲ +0.3 este mês</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon yellow"><i class="fas fa-check-circle"></i></div>
+            <div>
+              <div class="stat-value">92%</div>
+              <div class="stat-label">Frequência</div>
+              <div class="stat-trend up">▲ Regular</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="fas fa-tasks"></i></div>
+            <div>
+              <div class="stat-value">5</div>
+              <div class="stat-label">Atividades Pendentes</div>
+              <div class="stat-trend down">▼ 2 vencem hoje</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="fas fa-book-reader"></i></div>
+            <div>
+              <div class="stat-value">7</div>
+              <div class="stat-label">Disciplinas</div>
+              <div class="stat-trend up">▲ Em dia</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-grid">
+          <div>
+            <div class="card" style="margin-bottom:16px">
+              <div class="card-header">
+                <div class="card-title"><i class="fas fa-chart-bar"></i> Notas Recentes</div>
+                <a class="card-link" onclick="goToPage('boletim')">Ver boletim completo →</a>
+              </div>
+              <div class="grades-list">
+                <div class="grade-item">
+                  <div><div class="grade-subject">Matemática</div><div class="grade-meta">Prova · 20/03</div></div>
+                  <div class="grade-value good">9.5</div>
+                </div>
+                <div class="grade-item" style="border-color:var(--blue)">
+                  <div><div class="grade-subject">Português</div><div class="grade-meta">Trabalho · 18/03</div></div>
+                  <div class="grade-value good">8.8</div>
+                </div>
+                <div class="grade-item" style="border-color:var(--warning)">
+                  <div><div class="grade-subject">Física</div><div class="grade-meta">Simulado · 15/03</div></div>
+                  <div class="grade-value ok">6.5</div>
+                </div>
+                <div class="grade-item" style="border-color:var(--success)">
+                  <div><div class="grade-subject">História</div><div class="grade-meta">Prova · 12/03</div></div>
+                  <div class="grade-value good">9.0</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title"><i class="fas fa-tasks"></i> Próximas Atividades</div>
+                <a class="card-link" onclick="goToPage('calendario')">Ver calendário →</a>
+              </div>
+              <div class="activities-list">
+                <div class="activity-item">
+                  <div class="activity-dot purple"></div>
+                  <div class="activity-info">
+                    <div class="activity-title">Prova de Física</div>
+                    <div class="activity-subject">Cap. 5 – Termodinâmica</div>
+                  </div>
+                  <div class="activity-date">28/03</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot blue"></div>
+                  <div class="activity-info">
+                    <div class="activity-title">Entrega – Redação</div>
+                    <div class="activity-subject">Português – Dissertação</div>
+                  </div>
+                  <div class="activity-date">30/03</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot yellow"></div>
+                  <div class="activity-info">
+                    <div class="activity-title">Seminário de Biologia</div>
+                    <div class="activity-subject">Grupo C – Genética</div>
+                  </div>
+                  <div class="activity-date">02/04</div>
+                </div>
+                <div class="activity-item">
+                  <div class="activity-dot purple"></div>
+                  <div class="activity-info">
+                    <div class="activity-title">Lista – Matemática</div>
+                    <div class="activity-subject">Funções Trigonométricas</div>
+                  </div>
+                  <div class="activity-date">05/04</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="card" style="margin-bottom:16px">
+              <div class="card-header">
+                <div class="card-title"><i class="fas fa-calendar-alt"></i> Março 2025</div>
+                <div style="display:flex;gap:4px">
+                  <button class="cal-nav"><i class="fas fa-chevron-left"></i></button>
+                  <button class="cal-nav"><i class="fas fa-chevron-right"></i></button>
+                </div>
+              </div>
+              <div class="mini-calendar">
+                <div class="cal-days">
+                  <div class="cal-day-name">Dom</div>
+                  <div class="cal-day-name">Seg</div>
+                  <div class="cal-day-name">Ter</div>
+                  <div class="cal-day-name">Qua</div>
+                  <div class="cal-day-name">Qui</div>
+                  <div class="cal-day-name">Sex</div>
+                  <div class="cal-day-name">Sáb</div>
+                  <div class="cal-day other-month">23</div>
+                  <div class="cal-day other-month">24</div>
+                  <div class="cal-day other-month">25</div>
+                  <div class="cal-day other-month">26</div>
+                  <div class="cal-day other-month">27</div>
+                  <div class="cal-day other-month">28</div>
+                  <div class="cal-day">1</div>
+                  <div class="cal-day">2</div>
+                  <div class="cal-day has-event">3</div>
+                  <div class="cal-day">4</div>
+                  <div class="cal-day">5</div>
+                  <div class="cal-day">6</div>
+                  <div class="cal-day has-event">7</div>
+                  <div class="cal-day">8</div>
+                  <div class="cal-day">9</div>
+                  <div class="cal-day">10</div>
+                  <div class="cal-day has-event">11</div>
+                  <div class="cal-day">12</div>
+                  <div class="cal-day">13</div>
+                  <div class="cal-day">14</div>
+                  <div class="cal-day">15</div>
+                  <div class="cal-day">16</div>
+                  <div class="cal-day">17</div>
+                  <div class="cal-day has-event">18</div>
+                  <div class="cal-day">19</div>
+                  <div class="cal-day">20</div>
+                  <div class="cal-day">21</div>
+                  <div class="cal-day">22</div>
+                  <div class="cal-day">23</div>
+                  <div class="cal-day">24</div>
+                  <div class="cal-day today">25</div>
+                  <div class="cal-day">26</div>
+                  <div class="cal-day">27</div>
+                  <div class="cal-day has-event">28</div>
+                  <div class="cal-day">29</div>
+                  <div class="cal-day">30</div>
+                  <div class="cal-day">31</div>
+                  <div class="cal-day other-month">1</div>
+                  <div class="cal-day other-month">2</div>
+                  <div class="cal-day other-month">3</div>
+                  <div class="cal-day other-month">4</div>
+                  <div class="cal-day other-month">5</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div class="card-title"><i class="fas fa-bullhorn"></i> Avisos</div>
+                <span style="font-size:0.7rem;background:var(--danger);color:white;padding:2px 8px;border-radius:20px;font-weight:700">NOVO</span>
+              </div>
+              <div class="notices-list">
+                <div class="notice-item urgent">
+                  <div class="notice-tag">🔴 Urgente</div>
+                  <div class="notice-title">Rematrícula 2025/2 até 31/03</div>
+                  <div class="notice-date">Publicado em 20/03/2025</div>
+                </div>
+                <div class="notice-item info">
+                  <div class="notice-tag">🔵 Informativo</div>
+                  <div class="notice-title">Semana cultural: 07 a 11 de Abril</div>
+                  <div class="notice-date">Publicado em 18/03/2025</div>
+                </div>
+                <div class="notice-item success">
+                  <div class="notice-tag">🟢 Novidade</div>
+                  <div class="notice-title">Novas videoaulas de Química disponíveis</div>
+                  <div class="notice-date">Publicado em 15/03/2025</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── BOLETIM PAGE ─── -->
+      <div class="page" id="page-boletim">
+        <div class="page-header">
+          <h2>Boletim de Notas</h2>
+          <p>Acompanhe seu desempenho por bimestre</p>
+        </div>
+
+        <div class="periodo-tabs">
+          <div class="periodo-tab active">1º Bimestre</div>
+          <div class="periodo-tab">2º Bimestre</div>
+          <div class="periodo-tab">3º Bimestre</div>
+          <div class="periodo-tab">4º Bimestre</div>
+        </div>
+
+        <div class="card">
+          <table class="boletim-table">
+            <thead>
+              <tr>
+                <th>Disciplina</th>
+                <th>Prova 1</th>
+                <th>Trabalho</th>
+                <th>Participação</th>
+                <th>Média</th>
+                <th>Frequência</th>
+                <th>Situação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Matemática</strong></td>
+                <td><span class="grade-pill a">9.5</span></td>
+                <td><span class="grade-pill a">8.0</span></td>
+                <td><span class="grade-pill a">10</span></td>
+                <td><strong>9.2</strong></td>
+                <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:96%"></div></div> 96%</td>
+                <td><span class="status-badge paid"><i class="fas fa-check"></i> Aprovado</span></td>
+              </tr>
+              <tr>
+                <td><strong>Português</strong></td>
+                <td><span class="grade-pill a">8.5</span></td>
+                <td><span class="grade-pill a">9.0</span></td>
+                <td><span class="grade-pill a">8.5</span></td>
+                <td><strong>8.7</strong></td>
+                <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:92%"></div></div> 92%</td>
+                <td><span class="status-badge paid"><i class="fas fa-check"></i> Aprovado</span></td>
+              </tr>
+              <tr>
+                <td><strong>Física</strong></td>
+                <td><span class="grade-pill b">6.5</span></td>
+                <td><span class="grade-pill b">7.0</span></td>
+                <td><span class="grade-pill b">6.0</span></td>
+                <td><strong>6.5</strong></td>
+                <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:88%"></div></div> 88%</td>
+                <td><span class="status-badge pending"><i class="fas fa-clock"></i> Atenção</span></td>
+              </tr>
+              <tr>
+                <td><strong>Química</strong></td>
+                <td><span class="grade-pill a">8.0</span></td>
+                <td><span class="grade-pill a">8.5</span></td>
+                <td><span class="grade-pill a">9.0</span></td>
+                <td><strong>8.5</strong></td>
+                <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:94%"></div></div> 94%</td>
+                <td><span class="status-badge paid"><i class="fas fa-check"></i> Aprovado</span></td>
+              </tr>
+              <tr>
+                <td><strong>História</strong></td>
+                <td><span class="grade-pill a">9.0</span></td>
+                <td><span class="grade-pill a">8.0</span></td>
+                <td><span class="grade-pill a">10</span></td>
+                <td><strong>9.0</strong></td>
+                <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:98%"></div></div> 98%</td>
+                <td><span class="status-badge paid"><i class="fas fa-check"></i> Aprovado</span></td>
+              </tr>
+              <tr>
+                <td><strong>Biologia</strong></td>
+                <td><span class="grade-pill a">7.5</span></td>
+                <td><span class="grade-pill a">8.0</span></td>
+                <td><span class="grade-pill b">7.0</span></td>
+                <td><strong>7.5</strong></td>
+                <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:90%"></div></div> 90%</td>
+                <td><span class="status-badge paid"><i class="fas fa-check"></i> Aprovado</span></td>
+              </tr>
+              <tr>
+                <td><strong>Inglês</strong></td>
+                <td><span class="grade-pill c">5.0</span></td>
+                <td><span class="grade-pill b">6.5</span></td>
+                <td><span class="grade-pill b">6.0</span></td>
+                <td><strong>5.8</strong></td>
+                <td><div class="progress-bar-wrap"><div class="progress-bar" style="width:82%"></div></div> 82%</td>
+                <td><span class="status-badge late"><i class="fas fa-exclamation"></i> Recuperação</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ─── AVA PAGE ─── -->
+      <div class="page" id="page-ava">
+        <div class="page-header">
+          <h2>Ambiente Virtual de Aprendizagem</h2>
+          <p>Acesse videoaulas, materiais e acompanhe seu progresso</p>
+        </div>
+
+        <div class="ava-grid">
+          <div class="ava-course-card">
+            <div class="ava-thumb thumb-purple">📐</div>
+            <div class="ava-info">
+              <div class="ava-course-name">Matemática Avançada</div>
+              <div class="ava-teacher">Prof. Carlos Eduardo</div>
+              <div class="ava-progress-wrap">
+                <div class="ava-progress-label"><span>Progresso</span><span>78%</span></div>
+                <div class="ava-progress"><div class="ava-progress-fill" style="width:78%"></div></div>
+              </div>
+              <div class="ava-meta">
+                <span><i class="fas fa-play-circle"></i> 24 aulas</span>
+                <span><i class="fas fa-file-alt"></i> 8 materiais</span>
+                <span><i class="fas fa-comments"></i> Fórum ativo</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ava-course-card">
+            <div class="ava-thumb thumb-blue">🧪</div>
+            <div class="ava-info">
+              <div class="ava-course-name">Química Orgânica</div>
+              <div class="ava-teacher">Profa. Márcia Silva</div>
+              <div class="ava-progress-wrap">
+                <div class="ava-progress-label"><span>Progresso</span><span>62%</span></div>
+                <div class="ava-progress"><div class="ava-progress-fill" style="width:62%"></div></div>
+              </div>
+              <div class="ava-meta">
+                <span><i class="fas fa-play-circle"></i> 18 aulas</span>
+                <span><i class="fas fa-file-alt"></i> 12 materiais</span>
+                <span><i class="fas fa-book"></i> 3 livros</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ava-course-card">
+            <div class="ava-thumb thumb-yellow">⚡</div>
+            <div class="ava-info">
+              <div class="ava-course-name">Física – Termodinâmica</div>
+              <div class="ava-teacher">Prof. Roberto Alves</div>
+              <div class="ava-progress-wrap">
+                <div class="ava-progress-label"><span>Progresso</span><span>45%</span></div>
+                <div class="ava-progress"><div class="ava-progress-fill" style="width:45%"></div></div>
+              </div>
+              <div class="ava-meta">
+                <span><i class="fas fa-play-circle"></i> 20 aulas</span>
+                <span><i class="fas fa-file-alt"></i> 6 materiais</span>
+                <span><i class="fas fa-comments"></i> Fórum</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ava-course-card">
+            <div class="ava-thumb thumb-green">🌿</div>
+            <div class="ava-info">
+              <div class="ava-course-name">Biologia Celular</div>
+              <div class="ava-teacher">Profa. Juliana Costa</div>
+              <div class="ava-progress-wrap">
+                <div class="ava-progress-label"><span>Progresso</span><span>88%</span></div>
+                <div class="ava-progress"><div class="ava-progress-fill" style="width:88%"></div></div>
+              </div>
+              <div class="ava-meta">
+                <span><i class="fas fa-play-circle"></i> 16 aulas</span>
+                <span><i class="fas fa-file-alt"></i> 9 materiais</span>
+                <span><i class="fas fa-book"></i> 2 livros</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ava-course-card">
+            <div class="ava-thumb thumb-red">📜</div>
+            <div class="ava-info">
+              <div class="ava-course-name">História do Brasil</div>
+              <div class="ava-teacher">Prof. André Ferreira</div>
+              <div class="ava-progress-wrap">
+                <div class="ava-progress-label"><span>Progresso</span><span>95%</span></div>
+                <div class="ava-progress"><div class="ava-progress-fill" style="width:95%"></div></div>
+              </div>
+              <div class="ava-meta">
+                <span><i class="fas fa-play-circle"></i> 22 aulas</span>
+                <span><i class="fas fa-file-alt"></i> 15 materiais</span>
+                <span><i class="fas fa-comments"></i> Fórum ativo</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="ava-course-card">
+            <div class="ava-thumb thumb-teal">🌍</div>
+            <div class="ava-info">
+              <div class="ava-course-name">Inglês Intermediário</div>
+              <div class="ava-teacher">Profa. Sarah Johnson</div>
+              <div class="ava-progress-wrap">
+                <div class="ava-progress-label"><span>Progresso</span><span>52%</span></div>
+                <div class="ava-progress"><div class="ava-progress-fill" style="width:52%"></div></div>
+              </div>
+              <div class="ava-meta">
+                <span><i class="fas fa-play-circle"></i> 30 aulas</span>
+                <span><i class="fas fa-headphones"></i> Áudios</span>
+                <span><i class="fas fa-comments"></i> Fórum</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── FINANCEIRO PAGE ─── -->
+      <div class="page" id="page-financeiro">
+        <div class="page-header">
+          <h2>Financeiro</h2>
+          <p>Gerencie seus pagamentos e boletos</p>
+        </div>
+
+        <div class="fin-summary">
+          <div class="fin-card">
+            <div class="fin-label">Total em Dia</div>
+            <div class="fin-value green">R$ 4.800,00</div>
+          </div>
+          <div class="fin-card">
+            <div class="fin-label">Pendente</div>
+            <div class="fin-value red">R$ 960,00</div>
+          </div>
+          <div class="fin-card">
+            <div class="fin-label">Próximo Vencimento</div>
+            <div class="fin-value blue">28/03/2025</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title"><i class="fas fa-list"></i> Extrato de Pagamentos 2025</div>
+          </div>
+          <table class="payments-table">
+            <thead>
+              <tr>
+                <th>Mês</th>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Vencimento</th>
+                <th>Status</th>
+                <th>Ação</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Janeiro</td>
+                <td>Mensalidade – 3º Ano</td>
+                <td><strong>R$ 960,00</strong></td>
+                <td>28/01/2025</td>
+                <td><span class="status-badge paid"><i class="fas fa-check"></i> Pago</span></td>
+                <td>–</td>
+              </tr>
+              <tr>
+                <td>Fevereiro</td>
+                <td>Mensalidade – 3º Ano</td>
+                <td><strong>R$ 960,00</strong></td>
+                <td>28/02/2025</td>
+                <td><span class="status-badge paid"><i class="fas fa-check"></i> Pago</span></td>
+                <td>–</td>
+              </tr>
+              <tr>
+                <td>Março</td>
+                <td>Mensalidade – 3º Ano</td>
+                <td><strong>R$ 960,00</strong></td>
+                <td>28/03/2025</td>
+                <td><span class="status-badge paid"><i class="fas fa-check"></i> Pago</span></td>
+                <td>–</td>
+              </tr>
+              <tr>
+                <td>Abril</td>
+                <td>Mensalidade – 3º Ano</td>
+                <td><strong>R$ 960,00</strong></td>
+                <td>28/04/2025</td>
+                <td><span class="status-badge pending"><i class="fas fa-clock"></i> Pendente</span></td>
+                <td><button class="btn-boleto" onclick="showToast('Boleto gerado com sucesso!','success')"><i class="fas fa-barcode"></i> Gerar Boleto</button></td>
+              </tr>
+              <tr>
+                <td>Maio</td>
+                <td>Mensalidade – 3º Ano</td>
+                <td><strong>R$ 960,00</strong></td>
+                <td>28/05/2025</td>
+                <td><span class="status-badge pending"><i class="fas fa-clock"></i> Em aberto</span></td>
+                <td><button class="btn-boleto" onclick="showToast('Boleto gerado com sucesso!','success')"><i class="fas fa-barcode"></i> Gerar Boleto</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ─── BIBLIOTECA PAGE ─── -->
+      <div class="page" id="page-biblioteca">
+        <div class="page-header">
+          <h2>Biblioteca Virtual</h2>
+          <p>Acesse livros digitais, apostilas e materiais de estudo</p>
+        </div>
+
+        <div class="library-search-bar">
+          <input class="lib-search-input" type="text" placeholder="Buscar por título, autor ou disciplina...">
+          <button class="btn-search"><i class="fas fa-search"></i> Buscar</button>
+        </div>
+
+        <div class="books-grid">
+          <div class="book-card">
+            <div class="book-cover thumb-purple">📐</div>
+            <div class="book-info">
+              <div class="book-title">Álgebra Linear e suas Aplicações</div>
+              <div class="book-author">David C. Lay</div>
+              <span class="book-tag matematica">Matemática</span>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="book-cover thumb-teal">🧬</div>
+            <div class="book-info">
+              <div class="book-title">Biologia Celular e Molecular</div>
+              <div class="book-author">Alberts et al.</div>
+              <span class="book-tag ciencias">Ciências</span>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="book-cover thumb-red">📚</div>
+            <div class="book-info">
+              <div class="book-title">Dom Casmurro</div>
+              <div class="book-author">Machado de Assis</div>
+              <span class="book-tag literatura">Literatura</span>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="book-cover thumb-yellow">⚡</div>
+            <div class="book-info">
+              <div class="book-title">Fundamentos de Física</div>
+              <div class="book-author">Halliday & Resnick</div>
+              <span class="book-tag ciencias">Física</span>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="book-cover thumb-blue">🌍</div>
+            <div class="book-info">
+              <div class="book-title">História Geral e do Brasil</div>
+              <div class="book-author">Boris Fausto</div>
+              <span class="book-tag historia">História</span>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="book-cover thumb-green">🌿</div>
+            <div class="book-info">
+              <div class="book-title">Química Geral – Princípios</div>
+              <div class="book-author">Peter Atkins</div>
+              <span class="book-tag ciencias">Química</span>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="book-cover thumb-purple">📖</div>
+            <div class="book-info">
+              <div class="book-title">Grande Sertão: Veredas</div>
+              <div class="book-author">Guimarães Rosa</div>
+              <span class="book-tag literatura">Literatura</span>
+            </div>
+          </div>
+          <div class="book-card">
+            <div class="book-cover thumb-blue">∑</div>
+            <div class="book-info">
+              <div class="book-title">Cálculo – Vol. 1</div>
+              <div class="book-author">James Stewart</div>
+              <span class="book-tag matematica">Matemática</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── MENSAGENS PAGE ─── -->
+      <div class="page" id="page-mensagens">
+        <div class="page-header">
+          <h2>Mensagens</h2>
+          <p>Converse com professores e tutores</p>
+        </div>
+
+        <div class="msg-layout">
+          <div class="msg-contacts">
+            <div class="msg-contacts-header"><h4>Conversas</h4></div>
+            <div class="msg-contact-list">
+              <div class="msg-contact active" onclick="selectContact(this, 'Prof. Carlos Eduardo', 'Matemática')">
+                <div class="contact-avatar ca-purple">CE</div>
+                <div class="contact-info">
+                  <div class="contact-name">Prof. Carlos Eduardo</div>
+                  <div class="contact-preview">Ótima dúvida! O método é...</div>
+                </div>
+                <div class="contact-time">14:32</div>
+              </div>
+              <div class="msg-contact" onclick="selectContact(this, 'Profa. Márcia Silva', 'Química')">
+                <div class="contact-avatar ca-blue">MS</div>
+                <div class="contact-info">
+                  <div class="contact-name">Profa. Márcia Silva</div>
+                  <div class="contact-preview">Enviei o material do cap. 5</div>
+                </div>
+                <div class="contact-time">11:20</div>
+              </div>
+              <div class="msg-contact" onclick="selectContact(this, 'Tutor João Lima', 'Suporte Pedagógico')">
+                <div class="contact-avatar ca-yellow">JL</div>
+                <div class="contact-info">
+                  <div class="contact-name">Tutor João Lima</div>
+                  <div class="contact-preview">Agendei a sessão para sexta</div>
+                </div>
+                <div class="contact-time">Ontem</div>
+              </div>
+              <div class="msg-contact" onclick="selectContact(this, 'Profa. Juliana Costa', 'Biologia')">
+                <div class="contact-avatar ca-green">JC</div>
+                <div class="contact-info">
+                  <div class="contact-name">Profa. Juliana Costa</div>
+                  <div class="contact-preview">O seminário está ótimo!</div>
+                </div>
+                <div class="contact-time">Seg</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="msg-main">
+            <div class="msg-main-header">
+              <div class="contact-avatar ca-purple" style="width:36px;height:36px;font-size:0.8rem">CE</div>
+              <div>
+                <h4 id="msgContactName">Prof. Carlos Eduardo</h4>
+                <p>● Online agora</p>
+              </div>
+            </div>
+
+            <div class="msg-thread" id="msgThread">
+              <div class="msg-bubble-wrap">
+                <div class="bubble-avatar ca-purple" style="background:var(--purple-xlight);color:var(--purple);font-size:0.65rem;font-weight:700">CE</div>
+                <div>
+                  <div class="msg-bubble other">Olá, Ana! Vi que você teve algumas dúvidas na lista de trigonometria. O que posso te ajudar?</div>
+                  <div class="msg-time">14:28</div>
+                </div>
+              </div>
+              <div class="msg-bubble-wrap mine">
+                <div class="bubble-avatar" style="background:var(--purple);color:white;font-size:0.65rem;font-weight:700">AM</div>
+                <div>
+                  <div class="msg-bubble mine">Oi, Professor! Sim, estou com dificuldade na questão 7. Como calculo o seno de 75°?</div>
+                  <div class="msg-time">14:30</div>
+                </div>
+              </div>
+              <div class="msg-bubble-wrap">
+                <div class="bubble-avatar ca-purple" style="background:var(--purple-xlight);color:var(--purple);font-size:0.65rem;font-weight:700">CE</div>
+                <div>
+                  <div class="msg-bubble other">Ótima dúvida! O método mais simples é usar a adição de arcos: sen(75°) = sen(45° + 30°). Aplique a fórmula sen(a+b) = sen(a)cos(b) + cos(a)sen(b)!</div>
+                  <div class="msg-time">14:32</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="msg-input-wrap">
+              <input class="msg-input" id="msgInput" type="text" placeholder="Digite sua mensagem..." onkeydown="if(event.key==='Enter') sendMsg()">
+              <button class="btn-send" onclick="sendMsg()"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SECRETARIA PAGE ─── -->
+      <div class="page" id="page-secretaria">
+        <div class="page-header">
+          <h2>Secretaria Virtual</h2>
+          <p>Solicite documentos e serviços administrativos</p>
+        </div>
+
+        <div class="secretaria-grid">
+          <div class="secretaria-card">
+            <div class="sec-icon purple"><i class="fas fa-file-alt"></i></div>
+            <div class="sec-info">
+              <h4>Declaração de Matrícula</h4>
+              <p>Emita sua declaração de matrícula atualizada para uso em bancos, concursos e outros fins.</p>
+              <div class="sec-btn" onclick="showToast('Declaração gerada! Verifique seu e-mail.','success')">Emitir Documento</div>
+            </div>
+          </div>
+          <div class="secretaria-card">
+            <div class="sec-icon blue"><i class="fas fa-id-card"></i></div>
+            <div class="sec-info">
+              <h4>Carteirinha Estudantil</h4>
+              <p>Solicite a segunda via da sua carteirinha estudantil digital ou física.</p>
+              <div class="sec-btn" onclick="showToast('Solicitação enviada com sucesso!','success')">Solicitar Carteirinha</div>
+            </div>
+          </div>
+          <div class="secretaria-card">
+            <div class="sec-icon yellow"><i class="fas fa-exchange-alt"></i></div>
+            <div class="sec-info">
+              <h4>Alteração de Turno</h4>
+              <p>Solicite transferência entre turnos matutino, vespertino ou noturno sujeito a disponibilidade.</p>
+              <div class="sec-btn" onclick="showToast('Solicitação de troca enviada!','info')">Solicitar Alteração</div>
+            </div>
+          </div>
+          <div class="secretaria-card">
+            <div class="sec-icon green"><i class="fas fa-redo"></i></div>
+            <div class="sec-info">
+              <h4>Renovação de Matrícula</h4>
+              <p>Renove sua matrícula para o próximo semestre letivo antes do prazo estabelecido.</p>
+              <div class="sec-btn" onclick="showToast('Rematrícula iniciada! Complete o processo.','info')">Iniciar Renovação</div>
+            </div>
+          </div>
+          <div class="secretaria-card">
+            <div class="sec-icon purple"><i class="fas fa-scroll"></i></div>
+            <div class="sec-info">
+              <h4>Histórico Escolar</h4>
+              <p>Emita o histórico escolar oficial com todas as disciplinas cursadas e notas.</p>
+              <div class="sec-btn" onclick="goToPage('historico')">Emitir Histórico</div>
+            </div>
+          </div>
+          <div class="secretaria-card">
+            <div class="sec-icon blue"><i class="fas fa-calendar-check"></i></div>
+            <div class="sec-info">
+              <h4>Atestado de Frequência</h4>
+              <p>Solicite o atestado de frequência do semestre atual com assinatura digital.</p>
+              <div class="sec-btn" onclick="showToast('Atestado gerado! Verifique seu e-mail.','success')">Gerar Atestado</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── AVALIAÇÃO PAGE ─── -->
+      <div class="page" id="page-avaliacao">
+        <div class="page-header">
+          <h2>Avaliação de Docentes</h2>
+          <p>Sua opinião melhora a qualidade do ensino</p>
+        </div>
+
+        <div class="prof-grid">
+          <div class="prof-card">
+            <div class="prof-header">
+              <div class="prof-avatar ca-purple" style="background:var(--purple-xlight);color:var(--purple);font-size:1rem">CE</div>
+              <div class="prof-info">
+                <h4>Prof. Carlos Eduardo</h4>
+                <p>Matemática – 3º Ano A</p>
+              </div>
+            </div>
+            <div class="stars" data-prof="1">
+              <span class="star active" onclick="rateStar(this,1)">★</span>
+              <span class="star active" onclick="rateStar(this,2)">★</span>
+              <span class="star active" onclick="rateStar(this,3)">★</span>
+              <span class="star active" onclick="rateStar(this,4)">★</span>
+              <span class="star" onclick="rateStar(this,5)">★</span>
+            </div>
+            <textarea class="eval-textarea" placeholder="Deixe seu comentário sobre o professor..."></textarea>
+            <button class="btn-eval" onclick="showToast('Avaliação enviada. Obrigada!','success')"><i class="fas fa-paper-plane"></i> Enviar Avaliação</button>
+          </div>
+
+          <div class="prof-card">
+            <div class="prof-header">
+              <div class="prof-avatar" style="background:var(--blue-xlight);color:var(--blue);width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem">MS</div>
+              <div class="prof-info">
+                <h4>Profa. Márcia Silva</h4>
+                <p>Química – 3º Ano A</p>
+              </div>
+            </div>
+            <div class="stars" data-prof="2">
+              <span class="star active" onclick="rateStar(this,1)">★</span>
+              <span class="star active" onclick="rateStar(this,2)">★</span>
+              <span class="star active" onclick="rateStar(this,3)">★</span>
+              <span class="star active" onclick="rateStar(this,4)">★</span>
+              <span class="star active" onclick="rateStar(this,5)">★</span>
+            </div>
+            <textarea class="eval-textarea" placeholder="Deixe seu comentário..."></textarea>
+            <button class="btn-eval" onclick="showToast('Avaliação enviada. Obrigada!','success')"><i class="fas fa-paper-plane"></i> Enviar Avaliação</button>
+          </div>
+
+          <div class="prof-card">
+            <div class="prof-header">
+              <div class="prof-avatar" style="background:#FFF8D4;color:var(--yellow-dark);width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem">RA</div>
+              <div class="prof-info">
+                <h4>Prof. Roberto Alves</h4>
+                <p>Física – 3º Ano A</p>
+              </div>
+            </div>
+            <div class="stars" data-prof="3">
+              <span class="star active" onclick="rateStar(this,1)">★</span>
+              <span class="star active" onclick="rateStar(this,2)">★</span>
+              <span class="star active" onclick="rateStar(this,3)">★</span>
+              <span class="star" onclick="rateStar(this,4)">★</span>
+              <span class="star" onclick="rateStar(this,5)">★</span>
+            </div>
+            <textarea class="eval-textarea" placeholder="Deixe seu comentário..."></textarea>
+            <button class="btn-eval" onclick="showToast('Avaliação enviada. Obrigada!','success')"><i class="fas fa-paper-plane"></i> Enviar Avaliação</button>
+          </div>
+
+          <div class="prof-card">
+            <div class="prof-header">
+              <div class="prof-avatar" style="background:#DCFCE7;color:#16A34A;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem">JC</div>
+              <div class="prof-info">
+                <h4>Profa. Juliana Costa</h4>
+                <p>Biologia – 3º Ano A</p>
+              </div>
+            </div>
+            <div class="stars" data-prof="4">
+              <span class="star active" onclick="rateStar(this,1)">★</span>
+              <span class="star active" onclick="rateStar(this,2)">★</span>
+              <span class="star active" onclick="rateStar(this,3)">★</span>
+              <span class="star active" onclick="rateStar(this,4)">★</span>
+              <span class="star active" onclick="rateStar(this,5)">★</span>
+            </div>
+            <textarea class="eval-textarea" placeholder="Deixe seu comentário..."></textarea>
+            <button class="btn-eval" onclick="showToast('Avaliação enviada. Obrigada!','success')"><i class="fas fa-paper-plane"></i> Enviar Avaliação</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── PLACEHOLDER PAGES ─── -->
+      <div class="page" id="page-calendario">
+        <div class="page-header"><h2>Calendário Acadêmico</h2><p>Visualize todos os eventos do semestre</p></div>
+        <div class="card"><p style="color:var(--gray-600);text-align:center;padding:40px">📅 Calendário completo em desenvolvimento</p></div>
+      </div>
+
+      <div class="page" id="page-grade">
+        <div class="page-header"><h2>Grade de Disciplinas</h2><p>Confira sua grade horária semanal</p></div>
+        <div class="card">
+          <table class="boletim-table">
+            <thead><tr><th>Horário</th><th>Segunda</th><th>Terça</th><th>Quarta</th><th>Quinta</th><th>Sexta</th></tr></thead>
+            <tbody>
+              <tr><td>07:00–08:00</td><td>Matemática</td><td>Português</td><td>Física</td><td>Biologia</td><td>História</td></tr>
+              <tr><td>08:00–09:00</td><td>Química</td><td>Inglês</td><td>Matemática</td><td>Português</td><td>Química</td></tr>
+              <tr><td>09:00–10:00</td><td>Física</td><td>História</td><td>Biologia</td><td>Inglês</td><td>Matemática</td></tr>
+              <tr><td>10:00–11:00</td><td>Inglês</td><td>Biologia</td><td>Português</td><td>Física</td><td>Ed. Física</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="page" id="page-historico">
+        <div class="page-header"><h2>Histórico Escolar</h2><p>Seu histórico acadêmico completo</p></div>
+        <div class="card">
+          <div class="card-header"><div class="card-title"><i class="fas fa-scroll"></i> Histórico – Ana Martins</div><button class="btn-boleto" onclick="showToast('Histórico exportado em PDF!','success')"><i class="fas fa-download"></i> Exportar PDF</button></div>
+          <p style="color:var(--gray-600);font-size:0.88rem;margin-bottom:16px">Matrícula: 2023001547 · Curso: Ensino Médio · Turma: 3º Ano A</p>
+          <table class="boletim-table">
+            <thead><tr><th>Ano</th><th>Disciplina</th><th>Carga Horária</th><th>Nota Final</th><th>Situação</th></tr></thead>
+            <tbody>
+              <tr><td>2023 – 1º Ano</td><td>Matemática</td><td>120h</td><td>8.5</td><td><span class="status-badge paid">Aprovado</span></td></tr>
+              <tr><td>2023 – 1º Ano</td><td>Português</td><td>120h</td><td>9.0</td><td><span class="status-badge paid">Aprovado</span></td></tr>
+              <tr><td>2024 – 2º Ano</td><td>Matemática</td><td>120h</td><td>8.8</td><td><span class="status-badge paid">Aprovado</span></td></tr>
+              <tr><td>2024 – 2º Ano</td><td>Física</td><td>80h</td><td>7.5</td><td><span class="status-badge paid">Aprovado</span></td></tr>
+              <tr><td>2025 – 3º Ano</td><td>Todas</td><td>Em curso</td><td>–</td><td><span class="status-badge pending">Em Curso</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+// ─── UTILS ───
+function showToast(msg, type = 'info') {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
+  t.innerHTML = `<i class="fas ${icons[type] || 'fa-info-circle'}"></i> ${msg}`;
+  c.appendChild(t);
+  setTimeout(() => { t.style.animation = 'toastOut 0.3s ease forwards'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+// ─── AUTH STORAGE (localStorage) ───
+function getAccounts() {
+  try { return JSON.parse(localStorage.getItem('pa_accounts') || '[]'); }
+  catch { return []; }
+}
+function saveAccounts(accounts) {
+  localStorage.setItem('pa_accounts', JSON.stringify(accounts));
+}
+function findAccount(cpf) {
+  return getAccounts().find(a => a.cpf === cpf) || null;
+}
+function setSession(account) {
+  localStorage.setItem('pa_session', JSON.stringify({
+    cpf: account.cpf, nome: account.nome,
+    sobrenome: account.sobrenome, serie: account.serie, turno: account.turno
+  }));
+}
+function getSession() {
+  try { return JSON.parse(localStorage.getItem('pa_session') || 'null'); }
+  catch { return null; }
+}
+function clearSession() {
+  localStorage.removeItem('pa_session');
+}
+
+// ─── CPF MASK ───
+function cpfMask(v) {
+  v = v.replace(/\D/g,'');
+  if(v.length<=3) return v;
+  if(v.length<=6) return v.slice(0,3)+'.'+v.slice(3);
+  if(v.length<=9) return v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6);
+  return v.slice(0,3)+'.'+v.slice(3,6)+'.'+v.slice(6,9)+'-'+v.slice(9,11);
+}
+
+// ─── APPLY SESSION TO UI ───
+function applySession(session) {
+  const nomeCompleto = `${session.nome} ${session.sobrenome}`;
+  const iniciais = (session.nome[0] + (session.sobrenome ? session.sobrenome[0] : '')).toUpperCase();
+  document.querySelectorAll('.user-avatar').forEach(el => el.textContent = iniciais);
+  document.querySelectorAll('.user-name').forEach(el => el.textContent = nomeCompleto);
+  if(session.serie) document.querySelectorAll('.user-role').forEach(el => el.textContent = `Aluno(a) – ${session.serie}`);
+  const greet = document.querySelector('.greeting-text h3');
+  if(greet) greet.textContent = `Olá, ${session.nome}! Bem-vindo(a) de volta 👋`;
+  const histTitle = document.querySelector('#page-historico .card-title');
+  if(histTitle) histTitle.innerHTML = `<i class="fas fa-scroll"></i> Histórico – ${nomeCompleto}`;
+}
+
+// ─── BOOT: redireciona se já logado ───
+(function boot() {
+  const session = getSession();
+  if(session) {
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('app').classList.add('active');
+    applySession(session);
+  }
+})();
+
+// ─── LOGIN ───
+const cpfInput = document.getElementById('cpfInput');
+cpfInput.addEventListener('input', () => { cpfInput.value = cpfMask(cpfInput.value); });
+
+const togglePw = document.getElementById('togglePw');
+const pwInput  = document.getElementById('pwInput');
+const eyeIcon  = document.getElementById('eyeIcon');
+togglePw.addEventListener('click', () => {
+  const vis = pwInput.type === 'password';
+  pwInput.type = vis ? 'text' : 'password';
+  eyeIcon.className = vis ? 'fas fa-eye-slash' : 'fas fa-eye';
+});
+
+document.getElementById('btnLogin').addEventListener('click', () => {
+  const cpf = cpfInput.value.replace(/\D/g,'');
+  const pw  = pwInput.value;
+
+  document.getElementById('cpfError').classList.remove('show');
+  document.getElementById('pwError').classList.remove('show');
+  cpfInput.classList.remove('input-error');
+  pwInput.classList.remove('input-error');
+
+  let ok = true;
+  if(cpf.length !== 11) {
+    document.getElementById('cpfError').textContent = 'CPF inválido. Verifique o formato.';
+    document.getElementById('cpfError').classList.add('show');
+    cpfInput.classList.add('input-error');
+    ok = false;
+  }
+  if(pw.length < 3) {
+    document.getElementById('pwError').textContent = 'Digite sua senha.';
+    document.getElementById('pwError').classList.add('show');
+    pwInput.classList.add('input-error');
+    ok = false;
+  }
+  if(!ok) return;
+
+  const account = findAccount(cpf);
+  if(!account) {
+    document.getElementById('cpfError').textContent = 'CPF não encontrado. Crie uma conta primeiro.';
+    document.getElementById('cpfError').classList.add('show');
+    cpfInput.classList.add('input-error');
+    // Destaca aba Criar Conta
+    const tabSignup = document.getElementById('tabSignup');
+    tabSignup.style.background = 'var(--yellow)';
+    tabSignup.style.color = 'var(--gray-800)';
+    setTimeout(() => { tabSignup.style.background = ''; tabSignup.style.color = ''; }, 1500);
+    return;
+  }
+  if(account.senha !== pw) {
+    document.getElementById('pwError').textContent = 'Senha incorreta. Tente novamente.';
+    document.getElementById('pwError').classList.add('show');
+    pwInput.classList.add('input-error');
+    return;
+  }
+
+  // ✅ Login válido
+  const btn = document.getElementById('btnLogin');
+  const txt = document.getElementById('btnLoginText');
+  const spinner = document.getElementById('loginSpinner');
+  txt.style.display = 'none'; spinner.style.display = 'block'; btn.disabled = true;
+  setSession(account);
+
+  setTimeout(() => {
+    document.getElementById('login-page').style.display = 'none';
+    const loader = document.getElementById('pageLoader');
+    loader.classList.add('active');
+    setTimeout(() => {
+      loader.classList.remove('active');
+      document.getElementById('app').classList.add('active');
+      applySession(account);
+      showToast(`Bem-vindo(a), ${account.nome}! 📖`, 'success');
+      txt.style.display = 'block'; spinner.style.display = 'none'; btn.disabled = false;
+      cpfInput.value = ''; pwInput.value = '';
+    }, 1800);
+  }, 1000);
+});
+
+// ─── FORGOT PASSWORD ───
+document.getElementById('forgotLink').addEventListener('click', () => {
+  document.getElementById('forgotModal').classList.add('open');
+});
+document.getElementById('cancelForgot').addEventListener('click', () => {
+  document.getElementById('forgotModal').classList.remove('open');
+});
+document.getElementById('sendRecovery').addEventListener('click', () => {
+  document.getElementById('forgotModal').classList.remove('open');
+  showToast('Link de recuperação enviado para seu e-mail!','success');
+});
+document.getElementById('forgotModal').addEventListener('click', (e) => {
+  if(e.target === e.currentTarget) e.currentTarget.classList.remove('open');
+});
+
+// ─── NAVIGATION ───
+const pages = { dashboard:'Dashboard', boletim:'Boletim de Notas', ava:'AVA', financeiro:'Financeiro', biblioteca:'Biblioteca Virtual', mensagens:'Mensagens', secretaria:'Secretaria', avaliacao:'Avaliação de Docentes', calendario:'Calendário', grade:'Grade de Disciplinas', historico:'Histórico Escolar' };
+
+function goToPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const pg = document.getElementById('page-'+id);
+  if(pg) pg.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === id));
+  document.getElementById('topbarTitle').textContent = pages[id] || id;
+  closeSidebar();
+}
+document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+  item.addEventListener('click', () => goToPage(item.dataset.page));
+});
+
+// ─── MOBILE SIDEBAR ───
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('sidebarOverlay').classList.remove('visible');
+}
+document.getElementById('hamburgerBtn').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+  document.getElementById('sidebarOverlay').classList.toggle('visible');
+});
+document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
+
+// ─── NOTIFICATIONS ───
+document.getElementById('notifBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  document.getElementById('notifPanel').classList.toggle('open');
+});
+document.addEventListener('click', () => document.getElementById('notifPanel').classList.remove('open'));
+document.getElementById('notifPanel').addEventListener('click', e => e.stopPropagation());
+document.getElementById('clearNotif').addEventListener('click', () => {
+  document.querySelectorAll('.notif-item.unread').forEach(n => n.classList.remove('unread'));
+  document.querySelector('.notif-dot').style.display = 'none';
+  showToast('Todas notificações marcadas como lidas','info');
+});
+
+// ─── LOGOUT ───
+document.getElementById('btnLogout').addEventListener('click', () => {
+  clearSession();
+  document.getElementById('app').classList.remove('active');
+  document.getElementById('login-page').style.display = 'flex';
+  showToast('Sessão encerrada com segurança.','info');
+});
+
+// ─── MESSAGES ───
+function selectContact(el, name, subject) {
+  document.querySelectorAll('.msg-contact').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('msgContactName').textContent = name;
+  document.getElementById('msgThread').innerHTML = `
+    <div class="msg-bubble-wrap">
+      <div class="bubble-avatar" style="background:var(--purple-xlight);color:var(--purple);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700">${name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+      <div><div class="msg-bubble other">Olá! Como posso ajudar você em ${subject}?</div><div class="msg-time">Agora</div></div>
+    </div>`;
+}
+
+function sendMsg() {
+  const input = document.getElementById('msgInput');
+  const text = input.value.trim();
+  if(!text) return;
+  const thread = document.getElementById('msgThread');
+  const wrap = document.createElement('div');
+  wrap.className = 'msg-bubble-wrap mine';
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,'0');
+  const m = now.getMinutes().toString().padStart(2,'0');
+  const sess = getSession();
+  const initMe = sess ? (sess.nome[0]+(sess.sobrenome?.[0]||'')).toUpperCase() : 'EU';
+  wrap.innerHTML = `
+    <div class="bubble-avatar" style="background:var(--purple);color:white;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700">${initMe}</div>
+    <div><div class="msg-bubble mine">${text}</div><div class="msg-time">${h}:${m}</div></div>`;
+  thread.appendChild(wrap);
+  input.value = '';
+  thread.scrollTop = thread.scrollHeight;
+  setTimeout(() => {
+    const resp = document.createElement('div');
+    resp.className = 'msg-bubble-wrap';
+    const cname = document.getElementById('msgContactName').textContent;
+    const initials = cname.split(' ').map(w=>w[0]).join('').slice(0,2);
+    resp.innerHTML = `
+      <div class="bubble-avatar" style="background:var(--purple-xlight);color:var(--purple);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700">${initials}</div>
+      <div><div class="msg-bubble other">Obrigado pela sua mensagem! Responderei em breve. 📚</div><div class="msg-time">${h}:${(parseInt(m)+1).toString().padStart(2,'0')}</div></div>`;
+    thread.appendChild(resp);
+    thread.scrollTop = thread.scrollHeight;
+  }, 1200);
+}
+
+// ─── STAR RATING ───
+function rateStar(el, val) {
+  el.parentElement.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('active', i < val));
+}
+
+// ─── PERIOD TABS ───
+document.querySelectorAll('.periodo-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.periodo-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    showToast(`${tab.textContent} selecionado`,'info');
+  });
+});
+
+// ─── ANIMATE PROGRESS BARS ───
+setTimeout(() => {
+  document.querySelectorAll('.ava-progress-fill, .progress-bar').forEach(bar => {
+    const w = bar.style.width; bar.style.width = '0';
+    setTimeout(() => { bar.style.width = w; }, 100);
+  });
+}, 500);
+
+// ─── AUTH TABS ───
+function switchAuthTab(tab) {
+  const loginPanel  = document.getElementById('login-panel');
+  const signupPanel = document.getElementById('signup-panel');
+  const tabLogin    = document.getElementById('tabLogin');
+  const tabSignup   = document.getElementById('tabSignup');
+  if(tab === 'login') {
+    loginPanel.style.display = 'block'; signupPanel.style.display = 'none';
+    tabLogin.classList.add('active'); tabSignup.classList.remove('active');
+  } else {
+    loginPanel.style.display = 'none'; signupPanel.style.display = 'block';
+    tabLogin.classList.remove('active'); tabSignup.classList.add('active');
+    document.getElementById('signupSuccess').style.display = 'none';
+    document.getElementById('signupForm').style.display = 'block';
+  }
+}
+
+// ─── CPF MASK no cadastro ───
+document.getElementById('regCpf').addEventListener('input', function() {
+  this.value = cpfMask(this.value);
+});
+
+// ─── FORÇA DA SENHA ───
+function checkStrength(val) {
+  const segs = ['seg1','seg2','seg3','seg4'].map(id => document.getElementById(id));
+  const label = document.getElementById('strengthLabel');
+  segs.forEach(s => { s.style.background = 'var(--gray-100)'; });
+  let score = 0;
+  if(val.length >= 8) score++;
+  if(/[A-Z]/.test(val)) score++;
+  if(/[0-9]/.test(val)) score++;
+  if(/[^A-Za-z0-9]/.test(val)) score++;
+  const colors = ['var(--danger)','var(--warning)','var(--blue)','var(--success)'];
+  const labels = ['Muito fraca','Fraca','Boa','Forte 💪'];
+  for(let i = 0; i < score; i++) segs[i].style.background = colors[score-1];
+  label.textContent = score > 0 ? labels[score-1] : 'Digite uma senha';
+  label.style.color  = score > 0 ? colors[score-1] : 'var(--gray-600)';
+}
+
+// ─── TOGGLE VISIBILIDADE ───
+function toggleField(id, btn) {
+  const input = document.getElementById(id);
+  const icon  = btn.querySelector('i');
+  if(input.type === 'password') { input.type = 'text'; icon.className = 'fas fa-eye-slash'; }
+  else { input.type = 'password'; icon.className = 'fas fa-eye'; }
+}
+
+// ─── CADASTRO ───
+function submitSignup() {
+  ['regNome','regSobrenome','regCpf','regEmail','regNasc','regTurno','regSerie','regSenha','regConfirm'].forEach(id => {
+    document.getElementById(id).classList.remove('input-error');
+  });
+  document.querySelectorAll('#signup-panel .error-msg').forEach(e => e.classList.remove('show'));
+
+  let valid = true;
+  function err(fieldId, msgId, msg) {
+    const el = document.getElementById(fieldId);
+    if(el) el.classList.add('input-error');
+    const msgEl = document.getElementById(msgId);
+    if(msgEl) { if(msg) msgEl.textContent = msg; msgEl.classList.add('show'); }
+    valid = false;
+  }
+
+  const nome      = document.getElementById('regNome').value.trim();
+  const sobrenome = document.getElementById('regSobrenome').value.trim();
+  const cpf       = document.getElementById('regCpf').value.replace(/\D/g,'');
+  const email     = document.getElementById('regEmail').value.trim();
+  const nasc      = document.getElementById('regNasc').value;
+  const turno     = document.getElementById('regTurno').value;
+  const serie     = document.getElementById('regSerie').value;
+  const senha     = document.getElementById('regSenha').value;
+  const confirm   = document.getElementById('regConfirm').value;
+  const terms     = document.getElementById('acceptTerms').checked;
+
+  if(!nome)                          err('regNome',      'regNomeError',     'Nome obrigatório.');
+  if(!sobrenome)                     err('regSobrenome', 'regSobrenomeError','Sobrenome obrigatório.');
+  if(cpf.length !== 11)              err('regCpf',       'regCpfError',      'CPF inválido.');
+  if(!email || !email.includes('@')) err('regEmail',     'regEmailError',    'E-mail inválido.');
+  if(!nasc)                          err('regNasc',      'regNascError',     'Data obrigatória.');
+  if(!turno)                         err('regTurno',     'regTurnoError',    'Selecione o turno.');
+  if(!serie)                         err('regSerie',     'regSerieError',    'Selecione a série.');
+  if(senha.length < 8)               err('regSenha',     'regSenhaError',    'Senha muito fraca (mín. 8 caracteres).');
+  if(senha !== confirm)              err('regConfirm',   'regConfirmError',  'As senhas não coincidem.');
+  if(!terms) { document.getElementById('termsError').classList.add('show'); valid = false; }
+  if(!valid) return;
+
+  // Verifica CPF duplicado
+  if(findAccount(cpf)) {
+    err('regCpf','regCpfError','Este CPF já possui uma conta. Faça login.');
+    return;
+  }
+
+  // ✅ Salva conta no localStorage
+  const accounts = getAccounts();
+  accounts.push({ cpf, nome, sobrenome, email, nasc, turno, serie, senha });
+  saveAccounts(accounts);
+
+  const btn = document.getElementById('btnSignup');
+  document.getElementById('btnSignupText').style.display = 'none';
+  document.getElementById('signupSpinner').style.display = 'block';
+  btn.disabled = true;
+
+  setTimeout(() => {
+    document.getElementById('btnSignupText').style.display = 'block';
+    document.getElementById('signupSpinner').style.display = 'none';
+    btn.disabled = false;
+    document.getElementById('signupForm').style.display = 'none';
+    document.getElementById('signupSuccess').style.display = 'block';
+    showToast('Conta criada! Agora faça login. 🎉','success');
+  }, 1600);
+}
+</script></html>
